@@ -68,6 +68,33 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 		}
 
 		buf.WriteString(fmt.Sprintf("`json:\"%s\"`\t", column.Name))
+
+		buf.WriteString("\n")
+	}
+
+	buf.WriteString("}\n")
+
+	// //
+
+	buf.WriteString("type ")
+	buf.WriteString(goNamespace(table.Name))
+	buf.WriteString("TableObj struct {\n")
+
+	for _, column := range table.Columns {
+		buf.WriteString("\t")
+
+		buf.WriteString(goNamespace(column.Name))
+		buf.WriteString("\t")
+
+		if column.Children == nil {
+			setColumTypeToString(&buf, column.Length, column.Type)
+			buf.WriteString("\t")
+
+		} else {
+			setColumTypeToString(&buf, column.Children.Column.Length, column.Children.Column.Type)
+			buf.WriteString("\t")
+		}
+
 		if column.Key != generator.KeyNone {
 			buf.WriteString(fmt.Sprintf("//%s", column.Key.String()))
 		}
