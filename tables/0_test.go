@@ -1,7 +1,6 @@
 package tables
 
 import (
-	"microlog/tables/generator/file_md"
 	"microlog/tables/generator/parser"
 	"testing"
 )
@@ -16,5 +15,5 @@ func TestGenerate(t *testing.T) {
 		return
 	}
 
-	t.Log(file_md.Generate(tables, "tables structure.md"))
+	t.Log(tables)
 }
