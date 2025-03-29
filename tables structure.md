@@ -1,5 +1,4 @@
 # The overall structure of the tables
-
 This file is generated automatically
 
 ---
@@ -11,12 +10,14 @@ This file is generated automatically
 | [16]bytes | string |
 | _primary_ | _-_    |
 
+
 ## instances
 
 | uid       | text   |
 |-----------|--------|
 | [16]bytes | string |
 | _primary_ | _-_    |
+
 
 ## paths
 
@@ -25,12 +26,14 @@ This file is generated automatically
 | [12]bytes | string |
 | _primary_ | _-_    |
 
+
 ## status
 
 | uid       | text   |
 |-----------|--------|
 | [4]bytes  | string |
 | _primary_ | _-_    |
+
 
 ## stream
 
