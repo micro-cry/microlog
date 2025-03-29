@@ -1,11 +1,13 @@
 package parser
 
 import (
+	"bytes"
 	"fmt"
 	"gopkg.in/yaml.v3"
 	"microlog/tables/generator"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // // // // // // // // // //
@@ -29,7 +31,7 @@ func scanDir(pathToDir string) []string {
 	return filesArr
 }
 
-func readFile(pathToFile string) (map[string]ColumObj, error) {
+func readFile(pathToFile string) ([]*ColumObj, error) {
 	data, err := os.ReadFile(pathToFile)
 	if err != nil {
 		return nil, err
@@ -41,10 +43,10 @@ func readFile(pathToFile string) (map[string]ColumObj, error) {
 		return nil, err
 	}
 
-	result := make(map[string]ColumObj)
-
+	bufMap := make(map[string]*ColumObj)
 	for key, props := range rawData {
-		var col ColumObj
+		col := new(ColumObj)
+		col.Name = key
 
 		if l, ok := props["len"]; ok {
 			switch v := l.(type) {
@@ -77,10 +79,36 @@ func readFile(pathToFile string) (map[string]ColumObj, error) {
 			}
 		}
 
-		result[key] = col
+		if _, ok := bufMap[key]; ok {
+			return nil, fmt.Errorf("duplicate colum %s", key)
+		}
+
+		bufMap[key] = col
 	}
 
-	return result, nil
+	// //
+
+	var keys []string
+	lines := bytes.Split(data, []byte("\n"))
+	for _, line := range lines {
+		if len(line) == 0 {
+			continue
+		}
+		trimmed := strings.TrimSpace(string(line))
+		if len(trimmed) > 0 && line[0] != ' ' && strings.HasSuffix(trimmed, ":") {
+			key := strings.TrimSuffix(trimmed, ":")
+			keys = append(keys, key)
+		}
+	}
+
+	// //
+
+	bufArr := make([]*ColumObj, 0)
+	for _, key := range keys {
+		bufArr = append(bufArr, bufMap[key])
+	}
+
+	return bufArr, nil
 }
 
 // //

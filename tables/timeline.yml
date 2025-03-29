@@ -9,6 +9,6 @@ stream:
 status:
   children: status.uid
 path:
-  children: path.uid
+  children: paths.uid
 data:
   children: data.uid

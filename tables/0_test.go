@@ -1,7 +1,7 @@
 package tables
 
 import (
-	"encoding/json"
+	"microlog/tables/generator/file_md"
 	"microlog/tables/generator/parser"
 	"testing"
 )
@@ -16,9 +16,5 @@ func TestGenerate(t *testing.T) {
 		return
 	}
 
-	data, err := json.MarshalIndent(tables, "", "  ")
-	if err != nil {
-		t.Error(err)
-	}
-	t.Log(string(data))
+	t.Log(file_md.Generate(tables, "tables structure.md"))
 }

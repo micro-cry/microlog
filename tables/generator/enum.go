@@ -25,9 +25,11 @@ var ColumMap = map[ColumType]string{
 const (
 	KeyNone    KeyType = 0
 	KeyPrimary KeyType = 1
+	KeyIndex   KeyType = 2
 )
 
 var KeyMap = map[KeyType]string{
 	KeyNone:    "none",
 	KeyPrimary: "primary",
+	KeyIndex:   "index",
 }

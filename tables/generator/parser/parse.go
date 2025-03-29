@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"microlog/tables/generator"
 	"path/filepath"
+	"sort"
 	"strings"
 )
 
@@ -22,9 +23,10 @@ func Dir(pathToDir string) ([]generator.InfoTableObj, error) {
 
 	//
 
+	sort.Strings(filesArr)
 	for _, file := range filesArr {
 		path := filepath.Join(pathToDir, file)
-		bufMap, err := readFile(path)
+		bufArr, err := readFile(path)
 		if err != nil {
 			return nil, err
 		}
@@ -36,17 +38,17 @@ func Dir(pathToDir string) ([]generator.InfoTableObj, error) {
 		}
 
 		columArr := make([]generator.InfoColumObj, 0)
-		for name, obj := range bufMap {
+		for _, obj := range bufArr {
 
 			colum := generator.InfoColumObj{
-				Name:   name,
+				Name:   obj.Name,
 				Length: obj.Len,
 				Type:   parseColumType(obj.Type),
 				Key:    parseKeyType(obj.Key),
 			}
 			if obj.Children != "" {
 				colum.Children = new(generator.InfoColumChildrenObj)
-				childMap[tableName+"."+name] = obj.Children
+				childMap[tableName+"."+obj.Name] = obj.Children
 			}
 
 			columArr = append(columArr, colum)
@@ -79,6 +81,13 @@ func Dir(pathToDir string) ([]generator.InfoTableObj, error) {
 					if column.Children.Column != nil {
 						break
 					}
+				}
+
+				if column.Children.Column == nil {
+					return nil, fmt.Errorf(`column "%s.%s" has invalid children`, tableName, column.Name)
+				}
+				if column.Children.Table == nil {
+					return nil, fmt.Errorf(`table "%s.%s" has invalid children`, tableName, column.Name)
 				}
 			}
 		}
