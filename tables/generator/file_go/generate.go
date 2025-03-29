@@ -2,39 +2,39 @@ package file_go
 
 import (
 	"microlog/tables/generator"
-	"os"
-	"path/filepath"
 )
 
 // // // // // // // // // //
 
+const (
+	DirPrefix = "table_"
+)
+
 func Generate(tables []generator.InfoTableObj, pathToDir string) error {
-	items, err := os.ReadDir(pathToDir)
+	err := clearOldDir(pathToDir)
 	if err != nil {
 		return err
 	}
 
-	for _, item := range items {
-		if item.IsDir() {
-			fullPath := filepath.Join(pathToDir, item.Name())
-			err = os.RemoveAll(fullPath)
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	// //
-
 	for _, item := range tables {
-		newPath := filepath.Join(pathToDir, item.Name)
-		err = os.Mkdir(newPath, 0755)
+		newPath, err := createDir(pathToDir, item.Name)
 		if err != nil {
 			return err
 		}
 
 		//
 
+		if e := generateStruct(newPath, &item); e != nil {
+			return e
+		}
+
+		if e := generateValues(newPath, &item); e != nil {
+			return e
+		}
+
+		if e := generateFunc(newPath, &item); e != nil {
+			return e
+		}
 	}
 
 	return nil

@@ -35,7 +35,6 @@ func main() {
 		panic("no tables: " + filesPath)
 	}
 
-	filesPath = filepath.Join(filesPath, "struct")
 	err = file_go.Generate(tables, filesPath)
 	if err != nil {
 		panic(err)
