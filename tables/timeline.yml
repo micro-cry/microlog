@@ -1,0 +1,14 @@
+uid:
+  len: 18
+  type: bytes
+  key: primary
+time:
+  type: datetime
+stream:
+  children: stream.uid
+status:
+  children: status.uid
+path:
+  children: path.uid
+data:
+  children: data.uid

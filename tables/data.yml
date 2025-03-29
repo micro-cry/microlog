@@ -1,0 +1,6 @@
+uid:
+  len: 16
+  type: bytes
+  key: primary
+text:
+  type: string

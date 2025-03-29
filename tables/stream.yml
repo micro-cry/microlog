@@ -1,0 +1,12 @@
+uid:
+  len: 16
+  type: bytes
+  key: primary
+start:
+  type: datetime
+stop:
+  type: datetime
+instance:
+  children: instances.uid
+info:
+  children: data.uid
