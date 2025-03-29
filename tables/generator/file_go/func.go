@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
+	"microlog/tables/generator"
 	"os"
 	"path/filepath"
 	"strings"
+	"unicode"
 )
 
 // // // // // // // // // //
@@ -42,6 +44,17 @@ func createDir(pathToDir, dirName string) (string, error) {
 	return newPath, nil
 }
 
+func goNamespace(s string) string {
+	if len(s) == 0 {
+		return s
+	}
+
+	runes := []rune(s)
+	first := unicode.ToUpper(runes[0])
+	rest := strings.ToLower(string(runes[1:]))
+	return string(first) + rest
+}
+
 // //
 
 func writeGoFile(pathToFile string, data []byte) error {
@@ -69,4 +82,25 @@ func setHeaderGo(p string, b *bytes.Buffer) {
 
 func setSeparator(b *bytes.Buffer, sum int) {
 	b.WriteString("\n" + strings.Repeat("// ", sum) + "\n")
+}
+
+func setColumTypeToString(b *bytes.Buffer, l uint32, t generator.ColumType) {
+	switch t {
+
+	case generator.ColumBool, generator.ColumByte, generator.ColumString:
+		b.WriteString(t.String())
+
+	case generator.ColumBytes:
+		if l == 0 {
+			b.WriteString("[]byte")
+		} else {
+			b.WriteString(fmt.Sprintf("[%d]byte", l))
+		}
+
+	case generator.ColumDateTime:
+		b.WriteString("time.Time")
+
+	default:
+		b.WriteString("any")
+	}
 }

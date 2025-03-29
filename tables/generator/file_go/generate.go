@@ -6,10 +6,6 @@ import (
 
 // // // // // // // // // //
 
-const (
-	DirPrefix = "table_"
-)
-
 func Generate(tables []generator.InfoTableObj, pathToDir string) error {
 	err := clearOldDir(pathToDir)
 	if err != nil {
