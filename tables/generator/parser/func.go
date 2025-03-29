@@ -55,7 +55,7 @@ func readFile(pathToFile string) (map[string]ColumObj, error) {
 			case float64:
 				col.Len = uint32(v)
 			default:
-				fmt.Printf("невідомий тип для поля len у записі %s\n", key)
+				fmt.Printf("unknown type for Len field in the record %s\n", key)
 			}
 		}
 

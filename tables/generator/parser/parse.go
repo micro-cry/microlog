@@ -20,6 +20,8 @@ func Dir(pathToDir string) ([]generator.InfoTableObj, error) {
 	childMap := make(map[string]string)
 	retTables := make([]generator.InfoTableObj, 0)
 
+	//
+
 	for _, file := range filesArr {
 		path := filepath.Join(pathToDir, file)
 		bufMap, err := readFile(path)
@@ -54,7 +56,7 @@ func Dir(pathToDir string) ([]generator.InfoTableObj, error) {
 		retTables = append(retTables, generator.InfoTableObj{Name: tableName, Columns: columArr})
 	}
 
-	// //
+	//
 
 	for tableName, columArr := range tablesMap {
 		for _, column := range columArr {
@@ -83,8 +85,4 @@ func Dir(pathToDir string) ([]generator.InfoTableObj, error) {
 	}
 
 	return retTables, nil
-}
-
-func File(pathToFile string) (*generator.InfoTableObj, error) {
-	return nil, nil
 }
