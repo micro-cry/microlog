@@ -3,19 +3,21 @@ package generator
 // // // // // // // // // //
 
 const (
-	ColumBool     ColumType = 1
-	ColumByte     ColumType = 2
-	ColumBytes    ColumType = 3
-	ColumString   ColumType = 4
-	ColumDateTime ColumType = 5
+	ColumUndefined ColumType = 0
+	ColumBool      ColumType = 1
+	ColumByte      ColumType = 2
+	ColumBytes     ColumType = 3
+	ColumString    ColumType = 4
+	ColumDateTime  ColumType = 5
 )
 
 var ColumMap = map[ColumType]string{
-	ColumBool:     "bool",
-	ColumByte:     "byte",
-	ColumBytes:    "bytes",
-	ColumString:   "string",
-	ColumDateTime: "datetime",
+	ColumUndefined: "undefined",
+	ColumBool:      "bool",
+	ColumByte:      "byte",
+	ColumBytes:     "bytes",
+	ColumString:    "string",
+	ColumDateTime:  "datetime",
 }
 
 // //

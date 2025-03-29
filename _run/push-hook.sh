@@ -9,7 +9,7 @@ root_path=$(cd "$run_dir/.." && pwd)
 
 #############################################################################
 
-#go mod tidy
+go mod tidy
 
 NEW_VERSION=$(bash "$script_dir/sys.sh" --increment --patch)
 

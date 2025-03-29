@@ -13,10 +13,15 @@ type InfoColumObj struct {
 	Length   uint32
 	Type     ColumType
 	Key      KeyType
-	Children *InfoColumObj
+	Children *InfoColumChildrenObj
+}
+
+type InfoColumChildrenObj struct {
+	Table  *InfoTableObj
+	Column *InfoColumObj
 }
 
 type InfoTableObj struct {
 	Name    string
-	Columns []*InfoColumObj
+	Columns []InfoColumObj
 }
