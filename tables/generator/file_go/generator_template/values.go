@@ -26,6 +26,12 @@ type ValuesObj struct {
 // //
 
 func (data *ValuesObj) Generator(dirPath string, table *generator.InfoTableObj) error {
+	data.PackageName = filepath.Base(dirPath)
+	data.TableName = table.Name
+	data.TableConstName = "Table"
+	data.MapName = "NameToTypeMap"
+
+	// //
 
 	for _, column := range table.Columns {
 		data.ConstArr = append(data.ConstArr, fmt.Sprintf(

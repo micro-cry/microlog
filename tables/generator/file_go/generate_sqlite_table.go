@@ -3,7 +3,6 @@ package file_go
 import (
 	"microlog/tables/generator"
 	"microlog/tables/generator/file_go/generator_template"
-	"path/filepath"
 )
 
 // // // // // // // // // //
@@ -13,12 +12,7 @@ func init() {
 }
 
 func generateSQLiteTable(dirPath string, table *generator.InfoTableObj) error {
-	data := generator_template.SQLiteTableObj{
-		PackageName:   filepath.Base(dirPath),
-		SQLiteObjName: "SQLiteObj",
-	}
-
-	// //
+	data := new(generator_template.SQLiteTableObj)
 
 	return data.Generator(dirPath, table)
 }

@@ -3,7 +3,6 @@ package file_go
 import (
 	"microlog/tables/generator"
 	"microlog/tables/generator/file_go/generator_template"
-	"path/filepath"
 )
 
 // // // // // // // // // //
@@ -13,14 +12,7 @@ func init() {
 }
 
 func generateValues(dirPath string, table *generator.InfoTableObj) error {
-	data := generator_template.ValuesObj{
-		PackageName:    filepath.Base(dirPath),
-		TableName:      table.Name,
-		TableConstName: "Table",
-		MapName:        "NameToTypeMap",
-	}
-
-	// //
+	data := new(generator_template.ValuesObj)
 
 	return data.Generator(dirPath, table)
 }

@@ -2,6 +2,8 @@ package generator_template
 
 import (
 	_ "embed"
+	"fmt"
+	"math/rand"
 	"microlog/tables/generator"
 	"path/filepath"
 )
@@ -22,5 +24,13 @@ type FuncTestObj struct {
 // //
 
 func (data *FuncTestObj) Generator(dirPath string, table *generator.InfoTableObj) error {
+	column := table.Columns[rand.Intn(len(table.Columns))].Name
+
+	data.PackageName = filepath.Base(dirPath)
+	data.GoName = fmt.Sprintf("Name%s", goNamespace(column))
+	data.TableName = table.Name
+	data.ColumnName = column
+	data.ColumnNameSQL = "`" + table.Name + "." + column + "`"
+
 	return writeFileFromTemplate(filepath.Join(dirPath, "func_test.go"), FuncTestFile, data)
 }

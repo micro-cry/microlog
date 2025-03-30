@@ -30,6 +30,15 @@ type FuncObj struct {
 // //
 
 func (data *FuncObj) Generator(dirPath string, table *generator.InfoTableObj) error {
+	data.PackageName = filepath.Base(dirPath)
+	data.TableConstName = "Table"
+	data.MapName = "NameToTypeMap"
+
+	data.ColumnTypeName = TypeColumnName
+	data.DataObjName = nameObj(table.Name)
+	data.DataTableObjName = nameTableObj(table.Name)
+
+	// //
 
 	for _, column := range table.Columns {
 		var strBuf strings.Builder

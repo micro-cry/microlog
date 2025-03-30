@@ -19,5 +19,8 @@ type SQLiteObj struct {
 // //
 
 func (data *SQLiteObj) Generator(dirPath string, table *generator.InfoTableObj) error {
+	data.PackageName = filepath.Base(dirPath)
+	data.SQLiteObjName = "SQLiteObj"
+
 	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite.go"), SQLiteFile, data)
 }
