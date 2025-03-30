@@ -1,7 +1,5 @@
 package tables
 
-import "database/sql"
-
 // // // // // // // // // //
 
 type ColumnNameInterface interface {
@@ -27,10 +25,20 @@ type DataTableInterface interface {
 // //
 
 type GoFuncGeneratorInterface interface {
-	TableCheck(*sql.DB) error
-	TableCreate(*sql.DB) error
-	TableClear(*sql.DB) error
-	TableOptimize(*sql.DB) error
+	TableCheck() error
+	TableCreate() error
+	TableClear() error
+	TableOptimize() error
 
-	TableGetSize(*sql.DB) (uint64, error)
+	GetSize() (uint64, error)
+	GetFromUID([]byte) (DataTableInterface, error)
+	GetFromUIDs(...[]byte) ([]DataTableInterface, error)
+	GetFromIndexes(map[ColumnNameInterface]any) ([]DataTableInterface, error)
+	GetFromIndexesLimit(indexes map[ColumnNameInterface]any, indent, size uint32) ([]DataTableInterface, error)
+
+	Add(...DataTableInterface) error
+	EditFromUID([]byte, map[ColumnNameInterface]any) error
+
+	DeleteFromUID([]byte) error
+	DeleteFromUIDs(...[]byte) error
 }

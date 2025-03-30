@@ -10,6 +10,10 @@ import (
 
 // // // // // // // // // //
 
+func init() {
+	generatorArr = append(generatorArr, generateFuncTest)
+}
+
 func generateFuncTest(dirPath string, table *generator.InfoTableObj) error {
 	var buf bytes.Buffer
 	setHeaderGo(filepath.Base(dirPath), &buf)

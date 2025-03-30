@@ -9,6 +9,10 @@ import (
 
 // // // // // // // // // //
 
+func init() {
+	generatorArr = append(generatorArr, generateStruct)
+}
+
 func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 	importArr := make([]string, 0)
 	mapInc := map[generator.ColumType]string{

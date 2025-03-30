@@ -6,6 +6,10 @@ import (
 
 // // // // // // // // // //
 
+var generatorArr = make([]func(string, *generator.InfoTableObj) error, 0)
+
+//
+
 func Generate(tables []generator.InfoTableObj, pathToDir string) error {
 	err := clearOldDir(pathToDir)
 	if err != nil {
@@ -22,24 +26,14 @@ func Generate(tables []generator.InfoTableObj, pathToDir string) error {
 
 		//
 
-		if e := generateStruct(newPath, &item); e != nil {
-			return e
-		}
-
-		if e := generateValues(newPath, &item); e != nil {
-			return e
-		}
-
-		if e := generateFunc(newPath, &item); e != nil {
-			return e
-		}
-
-		if e := generateFuncTest(newPath, &item); e != nil {
-			return e
+		for _, f := range generatorArr {
+			if e := f(newPath, &item); e != nil {
+				return e
+			}
 		}
 
 		pathsMap[newPath] = &item
 	}
 
-	return generateRootTest(pathToDir, pathsMap)
+	return nil
 }
