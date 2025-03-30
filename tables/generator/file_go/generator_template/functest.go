@@ -4,7 +4,7 @@ import _ "embed"
 
 // // // // // // // // // //
 
-//go:embed functest.template
+//go:embed functest.tmpl
 var FuncTestFile string
 
 type FuncTestObj struct {

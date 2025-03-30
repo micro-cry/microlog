@@ -4,14 +4,16 @@ import _ "embed"
 
 // // // // // // // // // //
 
-//go:embed struct.template
+//go:embed struct.tmpl
 var StructFile string
 
 type StructObj struct {
 	PackageName    string
-	ColumnNameType string
-	ImportArr      []string
 	GoTableName    string
-	ObjArr         []string
-	TableObjArr    []string
+	ColumnNameType string
+
+	ImportArr []string
+
+	ObjArr      []string
+	TableObjArr []string
 }

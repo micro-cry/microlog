@@ -3,7 +3,9 @@ package file_go
 import (
 	"fmt"
 	"microlog/tables/generator"
+	"microlog/tables/generator/file_go/generator_template"
 	"path/filepath"
+	"strings"
 )
 
 // // // // // // // // // //
@@ -13,37 +15,40 @@ func init() {
 }
 
 func generateValues(dirPath string, table *generator.InfoTableObj) error {
-	buf := newBuf(filepath.Base(dirPath))
-
-	buf.WriteImports("microlog/tables")
-	buf.WriteSeparator(8)
+	data := generator_template.ValuesObj{
+		PackageName:    filepath.Base(dirPath),
+		TableName:      table.Name,
+		TableConstName: "Table",
+		MapName:        "NameToTypeMap",
+	}
 
 	// //
 
-	buf.WriteLine("const (")
-	buf.WritePadLine(1, fmt.Sprintf("Table = \"%s\"\n", table.Name))
-
 	for _, column := range table.Columns {
-		goName := fmt.Sprintf("Name%s", goNamespace(column.Name))
-		buf.WritePadLine(1, goName, " ", TypeColumnName, " = \"", column.Name, "\"")
+		data.ConstArr = append(data.ConstArr, fmt.Sprintf(
+			"Name%s %s = \"%s\"",
+			goNamespace(column.Name), TypeColumnName, column.Name,
+		))
 	}
-	buf.WriteLine(")\n")
 
-	buf.WriteLine("var NameToTypeMap = map[tables.ColumnNameInterface]string {")
 	for _, column := range table.Columns {
-		goName := fmt.Sprintf("Name%s", goNamespace(column.Name))
-		buf.WritePadString(1, goName, ": \"")
+		var strBuf strings.Builder
+
+		strBuf.WriteString(fmt.Sprintf("Name%s: ", goNamespace(column.Name)))
+		strBuf.WriteString("\"")
 
 		if column.Children == nil {
-			buf.WriteString(nameColumType(column.Length, column.Type))
+			strBuf.WriteString(nameColumType(column.Length, column.Type))
 		} else {
-			buf.WriteString(nameColumType(column.Children.Column.Length, column.Children.Column.Type))
+			strBuf.WriteString(nameColumType(column.Children.Column.Length, column.Children.Column.Type))
 		}
-		buf.WriteString("\"", ",", "\n")
+
+		strBuf.WriteString("\",")
+
+		data.MapArr = append(data.MapArr, strBuf.String())
 	}
-	buf.WriteLine("}")
 
 	// //
 
-	return writeGoFile(filepath.Join(dirPath, "values.go"), buf.Bytes())
+	return writeFileFromTemplate(filepath.Join(dirPath, "values.go"), generator_template.ValuesFile, data)
 }
