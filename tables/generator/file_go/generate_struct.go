@@ -40,9 +40,11 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 		buf.WriteString(")\n")
 	}
 
-	setSeparator(&buf, 16)
+	setSeparator(&buf, 8)
 
 	// //
+
+	buf.WriteString("type " + TypeColumnName + " string\n\n")
 
 	buf.WriteString("type ")
 	buf.WriteString(goNamespace(table.Name))

@@ -81,7 +81,7 @@ func setHeaderGo(p string, b *bytes.Buffer) {
 }
 
 func setSeparator(b *bytes.Buffer, sum int) {
-	b.WriteString("\n" + strings.Repeat("// ", sum) + "\n")
+	b.WriteString("\n" + strings.Repeat("// ", sum) + "\n\n")
 }
 
 func setColumTypeToString(b *bytes.Buffer, l uint32, t generator.ColumType) {

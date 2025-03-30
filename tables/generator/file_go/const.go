@@ -1,5 +1,6 @@
 package file_go
 
 const (
-	DirPrefix = "table_"
+	DirPrefix      = "table_"
+	TypeColumnName = "ColumnNameType"
 )
