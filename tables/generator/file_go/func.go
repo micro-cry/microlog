@@ -64,7 +64,7 @@ func writeGoFile(pathToFile string, data []byte) error {
 func writeFileFromTemplate(pathToFile string, textTemplate string, dataTemplate any) error {
 	fileName := filepath.Base(pathToFile)
 
-	t, err := template.New(pathToFile).Parse(textTemplate)
+	t, err := template.New(fileName).Parse(textTemplate)
 	if err != nil {
 		return fmt.Errorf("init template [%s]: %s", fileName, err.Error())
 	}
