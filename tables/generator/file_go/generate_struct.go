@@ -1,7 +1,6 @@
 package file_go
 
 import (
-	"bytes"
 	"fmt"
 	"microlog/tables/generator"
 	"path/filepath"
@@ -33,11 +32,10 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 
 	// //
 
-	var buf bytes.Buffer
-	setHeaderGo(filepath.Base(dirPath), &buf)
+	buf := newBuf(filepath.Base(dirPath))
 
-	setImports(&buf, importArr)
-	setSeparator(&buf, 8)
+	buf.WriteImports(importArr)
+	buf.WriteSeparator(8)
 
 	// //
 
@@ -54,7 +52,7 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 		buf.WriteString("\t")
 
 		if column.Children == nil {
-			setColumTypeToString(&buf, column.Length, column.Type)
+			buf.WriteString(nameColumType(column.Length, column.Type))
 			buf.WriteString("\t")
 
 		} else {
@@ -86,11 +84,11 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 		buf.WriteString("\t")
 
 		if column.Children == nil {
-			setColumTypeToString(&buf, column.Length, column.Type)
+			buf.WriteString(nameColumType(column.Length, column.Type))
 			buf.WriteString("\t")
 
 		} else {
-			setColumTypeToString(&buf, column.Children.Column.Length, column.Children.Column.Type)
+			buf.WriteString(nameColumType(column.Children.Column.Length, column.Children.Column.Type))
 			buf.WriteString("\t")
 		}
 

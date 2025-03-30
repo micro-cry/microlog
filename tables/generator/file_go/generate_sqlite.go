@@ -1,7 +1,6 @@
 package file_go
 
 import (
-	"bytes"
 	"microlog/tables/generator"
 	"path/filepath"
 )
@@ -15,16 +14,15 @@ func init() {
 }
 
 func generateSQLite(dirPath string, table *generator.InfoTableObj) error {
-	var buf bytes.Buffer
-	setHeaderGo(filepath.Base(dirPath), &buf)
+	buf := newBuf(filepath.Base(dirPath))
 
 	importArr := []string{
 		"context",
 		"database/sql",
 	}
 
-	setImports(&buf, importArr)
-	setSeparator(&buf, 8)
+	buf.WriteImports(importArr)
+	buf.WriteSeparator(8)
 
 	// //
 
@@ -42,7 +40,7 @@ func generateSQLite(dirPath string, table *generator.InfoTableObj) error {
 
 	//
 
-	setSeparator(&buf, 2)
+	buf.WriteSeparator(2)
 
 	buf.WriteString("func (obj *" + objSQLite + ") Ping() error {\n")
 	buf.WriteString("\treturn obj.db.PingContext(obj.ctx)\n")

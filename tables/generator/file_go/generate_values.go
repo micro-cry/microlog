@@ -1,7 +1,6 @@
 package file_go
 
 import (
-	"bytes"
 	"fmt"
 	"microlog/tables/generator"
 	"path/filepath"
@@ -14,15 +13,14 @@ func init() {
 }
 
 func generateValues(dirPath string, table *generator.InfoTableObj) error {
-	var buf bytes.Buffer
-	setHeaderGo(filepath.Base(dirPath), &buf)
+	buf := newBuf(filepath.Base(dirPath))
 
 	importArr := []string{
 		"microlog/tables",
 	}
 
-	setImports(&buf, importArr)
-	setSeparator(&buf, 8)
+	buf.WriteImports(importArr)
+	buf.WriteSeparator(8)
 
 	// //
 
@@ -41,9 +39,9 @@ func generateValues(dirPath string, table *generator.InfoTableObj) error {
 		buf.WriteString(fmt.Sprintf("\t%s: \"", goName))
 
 		if column.Children == nil {
-			setColumTypeToString(&buf, column.Length, column.Type)
+			buf.WriteString(nameColumType(column.Length, column.Type))
 		} else {
-			setColumTypeToString(&buf, column.Children.Column.Length, column.Children.Column.Type)
+			buf.WriteString(nameColumType(column.Children.Column.Length, column.Children.Column.Type))
 		}
 		buf.WriteString("\",\n")
 	}

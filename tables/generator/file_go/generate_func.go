@@ -1,7 +1,6 @@
 package file_go
 
 import (
-	"bytes"
 	"fmt"
 	"microlog/tables/generator"
 	"path/filepath"
@@ -14,16 +13,15 @@ func init() {
 }
 
 func generateFunc(dirPath string, table *generator.InfoTableObj) error {
-	var buf bytes.Buffer
-	setHeaderGo(filepath.Base(dirPath), &buf)
+	buf := newBuf(filepath.Base(dirPath))
 
 	importArr := []string{
 		"encoding/json",
 		"microlog/tables",
 	}
 
-	setImports(&buf, importArr)
-	setSeparator(&buf, 8)
+	buf.WriteImports(importArr)
+	buf.WriteSeparator(8)
 
 	// //
 
@@ -45,7 +43,7 @@ func generateFunc(dirPath string, table *generator.InfoTableObj) error {
 
 	//
 
-	setSeparator(&buf, 4)
+	buf.WriteSeparator(4)
 
 	buf.WriteString("func (obj *")
 	buf.WriteString(nameObj(table.Name))
@@ -75,7 +73,7 @@ func generateFunc(dirPath string, table *generator.InfoTableObj) error {
 
 	//
 
-	setSeparator(&buf, 2)
+	buf.WriteSeparator(2)
 
 	buf.WriteString("func (objTable *")
 	buf.WriteString(nameTableObj(table.Name))

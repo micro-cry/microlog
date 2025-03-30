@@ -1,7 +1,6 @@
 package file_go
 
 import (
-	"bytes"
 	"fmt"
 	"math/rand"
 	"microlog/tables/generator"
@@ -15,15 +14,14 @@ func init() {
 }
 
 func generateFuncTest(dirPath string, table *generator.InfoTableObj) error {
-	var buf bytes.Buffer
-	setHeaderGo(filepath.Base(dirPath), &buf)
+	buf := newBuf(filepath.Base(dirPath))
 
 	importArr := []string{
 		"testing",
 	}
 
-	setImports(&buf, importArr)
-	setSeparator(&buf, 8)
+	buf.WriteImports(importArr)
+	buf.WriteSeparator(8)
 
 	// //
 
@@ -57,7 +55,7 @@ func generateFuncTest(dirPath string, table *generator.InfoTableObj) error {
 
 	//
 
-	setSeparator(&buf, 4)
+	buf.WriteSeparator(4)
 
 	buf.WriteString("func BenchmarkString(b *testing.B) {\n")
 	buf.WriteString(fmt.Sprintf(
