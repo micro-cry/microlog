@@ -98,7 +98,9 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 		}
 
 		if column.Key != generator.KeyNone {
-			buf.WriteString(fmt.Sprintf("//%s", column.Key.String()))
+			buf.WriteString(fmt.Sprintf("//*%s", column.Key.String()))
+		} else if column.Children != nil {
+			buf.WriteString(fmt.Sprintf("//%s", generator.KeyIndex.String()))
 		}
 
 		buf.WriteString("\n")

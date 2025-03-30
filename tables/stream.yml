@@ -4,6 +4,7 @@ uid:
   key: primary
 start:
   type: datetime
+  key: index
 stop:
   type: datetime
 instance:

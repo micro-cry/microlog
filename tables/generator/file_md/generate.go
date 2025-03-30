@@ -40,13 +40,10 @@ func Generate(tables []generator.InfoTableObj, pathToFile string) error {
 
 			if column.Key != generator.KeyNone {
 				lineBuf[3] += fmt.Sprintf(" _%s_ |", column.Key.String())
+			} else if column.Children != nil {
+				lineBuf[3] += fmt.Sprintf(" _*%s_ |", generator.KeyIndex.String())
 			} else {
-
-				strBuf := "-"
-				if column.Children != nil {
-					strBuf = generator.KeyIndex.String()
-				}
-				lineBuf[3] += fmt.Sprintf(" _%s_ |", strBuf)
+				lineBuf[3] += " - |"
 			}
 
 		}

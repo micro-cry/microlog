@@ -8,7 +8,7 @@ This file is generated automatically
 | uid       | text   |
 |-----------|--------|
 | [16]bytes | string |
-| _primary_ | _-_    |
+| _primary_ | -      |
 
 
 ## instances
@@ -16,7 +16,7 @@ This file is generated automatically
 | uid       | text   |
 |-----------|--------|
 | [16]bytes | string |
-| _primary_ | _-_    |
+| _primary_ | -      |
 
 
 ## paths
@@ -24,7 +24,7 @@ This file is generated automatically
 | uid       | text   |
 |-----------|--------|
 | [12]bytes | string |
-| _primary_ | _-_    |
+| _primary_ | -      |
 
 
 ## status
@@ -32,7 +32,7 @@ This file is generated automatically
 | uid       | text   |
 |-----------|--------|
 | [4]bytes  | string |
-| _primary_ | _-_    |
+| _primary_ | -      |
 
 
 ## stream
@@ -40,7 +40,7 @@ This file is generated automatically
 | uid       | start    | stop     | instance      | info     |
 |-----------|----------|----------|---------------|----------|
 | [16]bytes | datetime | datetime | instances.uid | data.uid |
-| _primary_ | _-_      | _-_      | _index_       | _index_  |
+| _primary_ | _index_  | -        | _*index_      | _*index_ |
 
 
 ## timeline
@@ -48,6 +48,6 @@ This file is generated automatically
 | uid       | time     | stream     | status     | path      | data     |
 |-----------|----------|------------|------------|-----------|----------|
 | [18]bytes | datetime | stream.uid | status.uid | paths.uid | data.uid |
-| _primary_ | _-_      | _index_    | _index_    | _index_   | _index_  |
+| _primary_ | -        | _*index_   | _*index_   | _*index_  | _*index_ |
 
 
