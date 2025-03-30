@@ -31,6 +31,10 @@ func (data *StructObj) Generator(dirPath string, table *generator.InfoTableObj) 
 	data.ColumnNameType = TypeColumnName
 	data.GoTableName = goNamespace(table.Name)
 
+	data.ImportArr = make([]string, 0)
+	data.ObjArr = make([]string, 0)
+	data.TableObjArr = make([]string, 0)
+
 	// //
 
 	mapInc := map[generator.ColumType]string{

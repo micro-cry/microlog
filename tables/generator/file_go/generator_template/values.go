@@ -31,6 +31,9 @@ func (data *ValuesObj) Generator(dirPath string, table *generator.InfoTableObj) 
 	data.TableConstName = "Table"
 	data.MapName = "NameToTypeMap"
 
+	data.ConstArr = make([]string, 0)
+	data.MapArr = make([]string, 0)
+
 	// //
 
 	for _, column := range table.Columns {

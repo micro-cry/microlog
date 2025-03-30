@@ -2,11 +2,23 @@ package file_go
 
 import (
 	"microlog/tables/generator"
+	"microlog/tables/generator/file_go/generator_template"
 )
 
 // // // // // // // // // //
 
-var generatorArr = make([]func(string, *generator.InfoTableObj) error, 0)
+var generatorArr = []GeneratorInterface{
+	new(generator_template.FuncObj),
+	new(generator_template.StructObj),
+	new(generator_template.ValuesObj),
+
+	new(generator_template.FuncTestObj),
+
+	new(generator_template.SQLiteObj),
+	new(generator_template.SQLiteGetObj),
+	new(generator_template.SQLiteOtherObj),
+	new(generator_template.SQLiteTableObj),
+}
 
 //
 
@@ -16,8 +28,6 @@ func Generate(tables []generator.InfoTableObj, pathToDir string) error {
 		return err
 	}
 
-	pathsMap := make(map[string]*generator.InfoTableObj)
-
 	for _, item := range tables {
 		newPath, err := createDir(pathToDir, item.Name)
 		if err != nil {
@@ -26,13 +36,11 @@ func Generate(tables []generator.InfoTableObj, pathToDir string) error {
 
 		//
 
-		for _, f := range generatorArr {
-			if e := f(newPath, &item); e != nil {
+		for _, obj := range generatorArr {
+			if e := obj.Generator(newPath, &item); e != nil {
 				return e
 			}
 		}
-
-		pathsMap[newPath] = &item
 	}
 
 	return nil

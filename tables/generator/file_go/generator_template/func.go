@@ -37,6 +37,10 @@ func (data *FuncObj) Generator(dirPath string, table *generator.InfoTableObj) er
 	data.ColumnTypeName = TypeColumnName
 	data.DataObjName = nameObj(table.Name)
 	data.DataTableObjName = nameTableObj(table.Name)
+	data.ParentComment = ""
+
+	data.ChildrenArr = make([]string, 0)
+	data.ParentArr = make([]string, 0)
 
 	// //
 
