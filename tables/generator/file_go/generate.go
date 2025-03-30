@@ -12,6 +12,8 @@ func Generate(tables []generator.InfoTableObj, pathToDir string) error {
 		return err
 	}
 
+	pathsMap := make(map[string]*generator.InfoTableObj)
+
 	for _, item := range tables {
 		newPath, err := createDir(pathToDir, item.Name)
 		if err != nil {
@@ -35,7 +37,9 @@ func Generate(tables []generator.InfoTableObj, pathToDir string) error {
 		if e := generateFuncTest(newPath, &item); e != nil {
 			return e
 		}
+
+		pathsMap[newPath] = &item
 	}
 
-	return nil
+	return generateRootTest(pathToDir, pathsMap)
 }
