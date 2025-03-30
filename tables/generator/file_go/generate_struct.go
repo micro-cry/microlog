@@ -102,5 +102,5 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 		return err
 	}
 
-	return writeGoFile(filepath.Join(dirPath, "struct.go"), buf.Bytes())
+	return writeFileFromTemplate(filepath.Join(dirPath, "struct.go"), generator_template.StructFile, data)
 }

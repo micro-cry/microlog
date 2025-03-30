@@ -1,13 +1,11 @@
 package file_go
 
 import (
-	"bytes"
 	"fmt"
 	"math/rand"
 	"microlog/tables/generator"
 	"microlog/tables/generator/file_go/generator_template"
 	"path/filepath"
-	"text/template"
 )
 
 // // // // // // // // // //
@@ -29,16 +27,5 @@ func generateFuncTest(dirPath string, table *generator.InfoTableObj) error {
 
 	// //
 
-	t, err := template.New(DirPrefix + table.Name).Parse(generator_template.FuncTestFile)
-	if err != nil {
-		return err
-	}
-
-	var buf bytes.Buffer
-	err = t.Execute(&buf, data)
-	if err != nil {
-		return err
-	}
-
-	return writeGoFile(filepath.Join(dirPath, "func_test.go"), buf.Bytes())
+	return writeFileFromTemplate(filepath.Join(dirPath, "func_test.go"), generator_template.FuncTestFile, data)
 }
