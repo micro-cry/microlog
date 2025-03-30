@@ -60,7 +60,19 @@ func generateFunc(dirPath string, table *generator.InfoTableObj) error {
 	buf.WriteString(") Children() tables.DataTableInterface {\n")
 	buf.WriteString("\tobjTable := new(")
 	buf.WriteString(nameTableObj(table.Name) + ")\n")
-	//todo генератор по реальным
+	for _, column := range table.Columns {
+		if column.Children == nil {
+			buf.WriteString(fmt.Sprintf(
+				"\tobjTable.%s = obj.%s\n",
+				goNamespace(column.Name), goNamespace(column.Name),
+			))
+		} else {
+			buf.WriteString(fmt.Sprintf(
+				"\tobjTable.%s = obj.%s.%s\n",
+				goNamespace(column.Name), goNamespace(column.Name), goNamespace(column.Children.Column.Name),
+			))
+		}
+	}
 	buf.WriteString("\treturn objTable\n")
 	buf.WriteString("}\n\n")
 
@@ -83,12 +95,20 @@ func generateFunc(dirPath string, table *generator.InfoTableObj) error {
 	buf.WriteString(") TableColumns() map[tables.ColumnNameInterface]string {\n")
 	buf.WriteString("\treturn NameToTypeMap\n}\n\n")
 
+	buf.WriteString("//warning!!! \n//method does not create a complete structure, but only transfers those values that were in the original structure! \n//in case of nesting, there will be nil-values.\n")
 	buf.WriteString("func (objTable *")
 	buf.WriteString(nameTableObj(table.Name))
 	buf.WriteString(") Parent() tables.DataInterface {\n")
 	buf.WriteString("\tobj := new(")
 	buf.WriteString(nameObj(table.Name) + ")\n")
-	//todo генератор по реальным
+	for _, column := range table.Columns {
+		if column.Children == nil {
+			buf.WriteString(fmt.Sprintf(
+				"\tobjTable.%s = obj.%s\n",
+				goNamespace(column.Name), goNamespace(column.Name),
+			))
+		}
+	}
 	buf.WriteString("\treturn obj\n")
 	buf.WriteString("}\n\n")
 
