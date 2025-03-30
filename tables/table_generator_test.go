@@ -14,12 +14,6 @@ import (
 
 // // // // // // // //
 
-func TestTimeline(t *testing.T) {
-	if table_timeline.Table != "timeline" {
-		t.Error("table name should be empty")
-	}
-}
-
 func TestData(t *testing.T) {
 	if table_data.Table != "data" {
 		t.Error("table name should be empty")
@@ -46,6 +40,12 @@ func TestStatus(t *testing.T) {
 
 func TestStream(t *testing.T) {
 	if table_stream.Table != "stream" {
+		t.Error("table name should be empty")
+	}
+}
+
+func TestTimeline(t *testing.T) {
+	if table_timeline.Table != "timeline" {
 		t.Error("table name should be empty")
 	}
 }

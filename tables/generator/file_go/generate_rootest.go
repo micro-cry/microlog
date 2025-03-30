@@ -5,18 +5,21 @@ import (
 	"fmt"
 	"microlog/tables/generator"
 	"path/filepath"
+	"sort"
 )
 
 // // // // // // // // // //
 
 func generateRootTest(pathToDir string, pathsMap map[string]*generator.InfoTableObj) error {
 	importArr := make([]string, 0)
+	keyMap := make([]string, 0)
 	importArr = append(importArr, "testing")
 
 	for path, _ := range pathsMap {
-		path = fmt.Sprintf("microlog/tables/%s", filepath.Base(path))
-		importArr = append(importArr, path)
+		keyMap = append(keyMap, path)
+		importArr = append(importArr, fmt.Sprintf("microlog/tables/%s", filepath.Base(path)))
 	}
+	sort.Strings(keyMap)
 
 	// //
 
@@ -24,6 +27,8 @@ func generateRootTest(pathToDir string, pathsMap map[string]*generator.InfoTable
 	setHeaderGo(filepath.Base(pathToDir), &buf)
 
 	if len(importArr) > 0 {
+		sort.Strings(importArr)
+
 		buf.WriteString("import (\n")
 		for _, line := range importArr {
 			buf.WriteString(fmt.Sprintf("\t\"%s\"\n", line))
@@ -35,7 +40,8 @@ func generateRootTest(pathToDir string, pathsMap map[string]*generator.InfoTable
 
 	// //
 
-	for path, table := range pathsMap {
+	for _, path := range keyMap {
+		table := pathsMap[path]
 		key := filepath.Base(path)
 		path = fmt.Sprintf("microlog/tables/%s", key)
 
