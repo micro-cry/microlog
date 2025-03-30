@@ -45,22 +45,6 @@ func createDir(pathToDir, dirName string) (string, error) {
 	return newPath, nil
 }
 
-func writeGoFile(pathToFile string, data []byte) error {
-	file, err := os.OpenFile(pathToFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	formatted, err := format.Source(data)
-	if err != nil {
-		panic(err)
-	}
-
-	_, err = file.Write(formatted)
-	return err
-}
-
 func writeFileFromTemplate(pathToFile string, textTemplate string, dataTemplate any) error {
 	fileName := filepath.Base(pathToFile)
 

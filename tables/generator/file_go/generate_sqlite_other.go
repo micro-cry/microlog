@@ -2,6 +2,7 @@ package file_go
 
 import (
 	"microlog/tables/generator"
+	"microlog/tables/generator/file_go/generator_template"
 	"path/filepath"
 )
 
@@ -12,16 +13,12 @@ func init() {
 }
 
 func generateSQLiteOther(dirPath string, table *generator.InfoTableObj) error {
-	buf := newBuf(filepath.Base(dirPath))
-
-	importArr := []string{}
-
-	buf.WriteImports(importArr...)
-	buf.WriteSeparator(8)
+	data := generator_template.SQLiteOtherObj{
+		PackageName:   filepath.Base(dirPath),
+		SQLiteObjName: "SQLiteObj",
+	}
 
 	// //
 
-	// //
-
-	return writeGoFile(filepath.Join(dirPath, "sqlite_other.go"), buf.Bytes())
+	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_other.go"), generator_template.SQLiteOtherFile, data)
 }
