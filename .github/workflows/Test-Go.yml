@@ -25,8 +25,20 @@ jobs:
         with:
           go-version: 1.24
 
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ runner.os == 'Windows' && 'C:\Users\runneradmin\go\pkg\mod' || '~/go/pkg/mod' }}
+            ${{ runner.os == 'Windows' && 'C:\Users\runneradmin\go\bin' || '~/go/bin' }}
+            go.sum
+          key: ${{ runner.os }}-go-${{ hashFiles('go.mod') }}
+          restore-keys: ${{ runner.os }}-go
+
       - name: Run go generate
-        run: go generate ./...
+        run: |
+          go mod tidy
+          go generate ./...
 
       - name: Upload updated repository as artifact
         uses: actions/upload-artifact@v4
@@ -68,9 +80,6 @@ jobs:
             go.sum
           key: ${{ runner.os }}-go-${{ hashFiles('go.mod') }}
           restore-keys: ${{ runner.os }}-go
-
-      - name: Install dependencies
-        run: go mod tidy
 
       - name: Run tests
         run: go test -v ./... || exit 1
