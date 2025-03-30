@@ -20,28 +20,28 @@ func generateValues(dirPath string, table *generator.InfoTableObj) error {
 
 	// //
 
-	buf.WriteString("const (\n")
-	buf.WriteString(fmt.Sprintf("\tTable = \"%s\"\n\n", table.Name))
+	buf.WriteLine("const (")
+	buf.WritePadLine(1, fmt.Sprintf("Table = \"%s\"\n", table.Name))
 
 	for _, column := range table.Columns {
 		goName := fmt.Sprintf("Name%s", goNamespace(column.Name))
-		buf.WriteString(fmt.Sprintf("\t%s %s = \"%s\"\n", goName, TypeColumnName, column.Name))
+		buf.WritePadLine(1, goName, " ", TypeColumnName, " = \"", column.Name, "\"")
 	}
-	buf.WriteString(")\n\n")
+	buf.WriteLine(")\n")
 
-	buf.WriteString("var NameToTypeMap = map[tables.ColumnNameInterface]string {\n")
+	buf.WriteLine("var NameToTypeMap = map[tables.ColumnNameInterface]string {")
 	for _, column := range table.Columns {
 		goName := fmt.Sprintf("Name%s", goNamespace(column.Name))
-		buf.WriteString(fmt.Sprintf("\t%s: \"", goName))
+		buf.WritePadString(1, goName, ": \"")
 
 		if column.Children == nil {
 			buf.WriteString(nameColumType(column.Length, column.Type))
 		} else {
 			buf.WriteString(nameColumType(column.Children.Column.Length, column.Children.Column.Type))
 		}
-		buf.WriteString("\",\n")
+		buf.WriteString("\"", ",", "\n")
 	}
-	buf.WriteString("}\n")
+	buf.WriteLine("}")
 
 	// //
 

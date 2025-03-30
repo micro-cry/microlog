@@ -41,7 +41,7 @@ func (obj *bufObj) WriteString(text ...string) {
 	if l == 1 {
 		obj.buf.Write([]byte(text[0]))
 	} else {
-		obj.buf.Write([]byte(strings.Join(text, " ")))
+		obj.buf.Write([]byte(strings.Join(text, "")))
 	}
 }
 
@@ -50,9 +50,13 @@ func (obj *bufObj) WriteLine(text ...string) {
 	obj.buf.WriteString("\n")
 }
 
-func (obj *bufObj) WritePadLine(pad int, text ...string) {
+func (obj *bufObj) WritePadString(pad int, text ...string) {
 	obj.buf.WriteString(strings.Repeat("\t", pad))
 	obj.WriteString(text...)
+}
+
+func (obj *bufObj) WritePadLine(pad int, text ...string) {
+	obj.WritePadString(pad, text...)
 	obj.buf.WriteString("\n")
 }
 
