@@ -28,8 +28,8 @@ type ValuesObj struct {
 func (data *ValuesObj) Generator(dirPath string, table *generator.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
 	data.TableName = table.Name
-	data.TableConstName = "Table"
-	data.MapName = "NameToTypeMap"
+	data.TableConstName = TableConstName
+	data.MapName = TableMapName
 
 	data.ConstArr = make([]string, 0)
 	data.MapArr = make([]string, 0)
@@ -38,15 +38,15 @@ func (data *ValuesObj) Generator(dirPath string, table *generator.InfoTableObj) 
 
 	for _, column := range table.Columns {
 		data.ConstArr = append(data.ConstArr, fmt.Sprintf(
-			"Name%s %s = \"%s\"",
-			goNamespace(column.Name), TypeColumnName, column.Name,
+			"%s%s %s = \"%s\"",
+			ColumnNamePrefix, goNamespace(column.Name), TypeColumnName, column.Name,
 		))
 	}
 
 	for _, column := range table.Columns {
 		var strBuf strings.Builder
 
-		strBuf.WriteString(fmt.Sprintf("Name%s: ", goNamespace(column.Name)))
+		strBuf.WriteString(fmt.Sprintf("%s%s: ", ColumnNamePrefix, goNamespace(column.Name)))
 		strBuf.WriteString("\"")
 
 		if column.Children == nil {

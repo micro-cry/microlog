@@ -1,15 +1,12 @@
 package file_go
 
 import (
+	"microlog/tables/generator/file_go/generator_template"
 	"os"
 	"path/filepath"
 )
 
 // // // // // // // // // //
-
-const (
-	DirPrefix = "table_"
-)
 
 func clearOldDir(pathToDir string) error {
 	items, err := os.ReadDir(pathToDir)
@@ -18,8 +15,8 @@ func clearOldDir(pathToDir string) error {
 	}
 
 	for _, item := range items {
-		if item.IsDir() && len(item.Name()) > len(DirPrefix) {
-			if item.Name()[:len(DirPrefix)] == DirPrefix {
+		if item.IsDir() && len(item.Name()) > len(generator_template.DirPrefix) {
+			if item.Name()[:len(generator_template.DirPrefix)] == generator_template.DirPrefix {
 				fullPath := filepath.Join(pathToDir, item.Name())
 				err = os.RemoveAll(fullPath)
 				if err != nil {
@@ -33,7 +30,7 @@ func clearOldDir(pathToDir string) error {
 }
 
 func createDir(pathToDir, dirName string) (string, error) {
-	newPath := filepath.Join(pathToDir, DirPrefix+dirName)
+	newPath := filepath.Join(pathToDir, generator_template.DirPrefix+dirName)
 	err := os.Mkdir(newPath, 0755)
 	if err != nil {
 		return "", err

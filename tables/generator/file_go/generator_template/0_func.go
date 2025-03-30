@@ -14,13 +14,6 @@ import (
 
 // // // // // // // // // //
 
-const (
-	DirPrefix      = "table_"
-	TypeColumnName = "ColumnNameType"
-)
-
-//
-
 func goNamespace(s string) string {
 	if len(s) == 0 {
 		return s

@@ -31,8 +31,8 @@ type FuncObj struct {
 
 func (data *FuncObj) Generator(dirPath string, table *generator.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
-	data.TableConstName = "Table"
-	data.MapName = "NameToTypeMap"
+	data.TableConstName = TableConstName
+	data.MapName = TableMapName
 
 	data.ColumnTypeName = TypeColumnName
 	data.DataObjName = nameObj(table.Name)

@@ -27,7 +27,7 @@ func (data *FuncTestObj) Generator(dirPath string, table *generator.InfoTableObj
 	column := table.Columns[rand.Intn(len(table.Columns))].Name
 
 	data.PackageName = filepath.Base(dirPath)
-	data.GoName = fmt.Sprintf("Name%s", goNamespace(column))
+	data.GoName = fmt.Sprintf("%s%s", ColumnNamePrefix, goNamespace(column))
 	data.TableName = table.Name
 	data.ColumnName = column
 	data.ColumnNameSQL = "`" + table.Name + "." + column + "`"
