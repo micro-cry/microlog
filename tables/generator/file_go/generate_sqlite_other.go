@@ -2,7 +2,6 @@ package file_go
 
 import (
 	"bytes"
-	"fmt"
 	"microlog/tables/generator"
 	"path/filepath"
 )
@@ -19,14 +18,7 @@ func generateSQLiteOther(dirPath string, table *generator.InfoTableObj) error {
 
 	importArr := []string{}
 
-	if len(importArr) > 0 {
-		buf.WriteString("import (\n")
-		for _, line := range importArr {
-			buf.WriteString(fmt.Sprintf("\t\"%s\"\n", line))
-		}
-		buf.WriteString(")\n")
-	}
-
+	setImports(&buf, importArr)
 	setSeparator(&buf, 8)
 
 	// //

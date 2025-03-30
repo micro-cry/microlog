@@ -36,14 +36,7 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 	var buf bytes.Buffer
 	setHeaderGo(filepath.Base(dirPath), &buf)
 
-	if len(importArr) > 0 {
-		buf.WriteString("import (\n")
-		for _, line := range importArr {
-			buf.WriteString(fmt.Sprintf("\t\"%s\"\n", line))
-		}
-		buf.WriteString(")\n")
-	}
-
+	setImports(&buf, importArr)
 	setSeparator(&buf, 8)
 
 	// //

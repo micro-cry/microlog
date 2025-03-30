@@ -17,8 +17,11 @@ func generateValues(dirPath string, table *generator.InfoTableObj) error {
 	var buf bytes.Buffer
 	setHeaderGo(filepath.Base(dirPath), &buf)
 
-	buf.WriteString("import \"microlog/tables\"\n")
+	importArr := []string{
+		"microlog/tables",
+	}
 
+	setImports(&buf, importArr)
 	setSeparator(&buf, 8)
 
 	// //

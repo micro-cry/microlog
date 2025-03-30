@@ -22,14 +22,7 @@ func generateFunc(dirPath string, table *generator.InfoTableObj) error {
 		"microlog/tables",
 	}
 
-	if len(importArr) > 0 {
-		buf.WriteString("import (\n")
-		for _, line := range importArr {
-			buf.WriteString(fmt.Sprintf("\t\"%s\"\n", line))
-		}
-		buf.WriteString(")\n")
-	}
-
+	setImports(&buf, importArr)
 	setSeparator(&buf, 8)
 
 	// //

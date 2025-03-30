@@ -18,8 +18,11 @@ func generateFuncTest(dirPath string, table *generator.InfoTableObj) error {
 	var buf bytes.Buffer
 	setHeaderGo(filepath.Base(dirPath), &buf)
 
-	buf.WriteString("import \"testing\"")
+	importArr := []string{
+		"testing",
+	}
 
+	setImports(&buf, importArr)
 	setSeparator(&buf, 8)
 
 	// //
