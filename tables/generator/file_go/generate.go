@@ -31,6 +31,10 @@ func Generate(tables []generator.InfoTableObj, pathToDir string) error {
 		if e := generateFunc(newPath, &item); e != nil {
 			return e
 		}
+
+		if e := generateFuncTest(newPath, &item); e != nil {
+			return e
+		}
 	}
 
 	return nil
