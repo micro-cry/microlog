@@ -27,5 +27,5 @@ func generateFuncTest(dirPath string, table *generator.InfoTableObj) error {
 
 	// //
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "func_test.go"), generator_template.FuncTestFile, data)
+	return data.Generator(dirPath, table)
 }

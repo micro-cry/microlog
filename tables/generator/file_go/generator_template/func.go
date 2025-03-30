@@ -1,6 +1,12 @@
 package generator_template
 
-import _ "embed"
+import (
+	_ "embed"
+	"fmt"
+	"microlog/tables/generator"
+	"path/filepath"
+	"strings"
+)
 
 // // // // // // // // // //
 
@@ -19,4 +25,42 @@ type FuncObj struct {
 
 	ChildrenArr []string
 	ParentArr   []string
+}
+
+// //
+
+func (data *FuncObj) Generator(dirPath string, table *generator.InfoTableObj) error {
+
+	for _, column := range table.Columns {
+		var strBuf strings.Builder
+
+		if column.Children == nil {
+			strBuf.WriteString(fmt.Sprintf(
+				"objTable.%s = obj.%s",
+				goNamespace(column.Name), goNamespace(column.Name),
+			))
+		} else {
+			data.ParentComment = "// warning!!!\n// method does not create a complete structure, but only transfers those values that were in the original structure!"
+
+			strBuf.WriteString(fmt.Sprintf(
+				"objTable.%s = obj.%s.%s",
+				goNamespace(column.Name), goNamespace(column.Name), goNamespace(column.Children.Column.Name),
+			))
+		}
+
+		data.ChildrenArr = append(data.ChildrenArr, strBuf.String())
+	}
+
+	for _, column := range table.Columns {
+		if column.Children == nil {
+			data.ParentArr = append(data.ParentArr, fmt.Sprintf(
+				"objTable.%s = obj.%s",
+				goNamespace(column.Name), goNamespace(column.Name),
+			))
+		}
+	}
+
+	// //
+
+	return writeFileFromTemplate(filepath.Join(dirPath, "func.go"), FuncFile, data)
 }

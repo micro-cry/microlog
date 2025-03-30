@@ -1,6 +1,9 @@
 package generator_template
 
-import _ "embed"
+import (
+	_ "embed"
+	"microlog/tables/generator"
+)
 
 // // // // // // // // // //
 
@@ -16,3 +19,7 @@ type ValuesObj struct {
 	ConstArr []string
 	MapArr   []string
 }
+
+// //
+
+func (data *ValuesObj) Generator(dirPath string, table *generator.InfoTableObj) error {}

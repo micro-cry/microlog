@@ -20,5 +20,5 @@ func generateSQLiteGet(dirPath string, table *generator.InfoTableObj) error {
 
 	// //
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_get.go"), generator_template.SQLiteGetFile, data)
+	return data.Generator(dirPath, table)
 }

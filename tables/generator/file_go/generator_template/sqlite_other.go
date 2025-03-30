@@ -1,6 +1,10 @@
 package generator_template
 
-import _ "embed"
+import (
+	_ "embed"
+	"microlog/tables/generator"
+	"path/filepath"
+)
 
 // // // // // // // // // //
 
@@ -10,4 +14,10 @@ var SQLiteOtherFile string
 type SQLiteOtherObj struct {
 	PackageName   string
 	SQLiteObjName string
+}
+
+// //
+
+func (data *SQLiteOtherObj) Generator(dirPath string, table *generator.InfoTableObj) error {
+	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_other.go"), SQLiteOtherFile, data)
 }

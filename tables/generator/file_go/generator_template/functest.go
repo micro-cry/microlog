@@ -1,6 +1,10 @@
 package generator_template
 
-import _ "embed"
+import (
+	_ "embed"
+	"microlog/tables/generator"
+	"path/filepath"
+)
 
 // // // // // // // // // //
 
@@ -13,4 +17,10 @@ type FuncTestObj struct {
 	TableName     string
 	ColumnName    string
 	ColumnNameSQL string
+}
+
+// //
+
+func (data *FuncTestObj) Generator(dirPath string, table *generator.InfoTableObj) error {
+	return writeFileFromTemplate(filepath.Join(dirPath, "func_test.go"), FuncTestFile, data)
 }
