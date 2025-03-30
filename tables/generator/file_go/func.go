@@ -1,18 +1,18 @@
 package file_go
 
 import (
-	"bytes"
-	"fmt"
-	"go/format"
-	"microlog/tables/generator"
 	"os"
 	"path/filepath"
 	"strings"
-	"text/template"
 	"unicode"
 )
 
 // // // // // // // // // //
+
+const (
+	DirPrefix      = "table_"
+	TypeColumnName = "ColumnNameType"
+)
 
 func clearOldDir(pathToDir string) error {
 	items, err := os.ReadDir(pathToDir)
@@ -45,39 +45,6 @@ func createDir(pathToDir, dirName string) (string, error) {
 	return newPath, nil
 }
 
-func writeFileFromTemplate(pathToFile string, textTemplate string, dataTemplate any) error {
-	fileName := filepath.Base(pathToFile)
-
-	t, err := template.New(fileName).Parse(textTemplate)
-	if err != nil {
-		return fmt.Errorf("init template [%s]: %s", fileName, err.Error())
-	}
-
-	var buf bytes.Buffer
-	err = t.Execute(&buf, dataTemplate)
-	if err != nil {
-		return fmt.Errorf("filling template [%s]: %s", fileName, err.Error())
-	}
-
-	file, err := os.OpenFile(pathToFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
-	if err != nil {
-		return fmt.Errorf("open file [%s]: %s", fileName, err.Error())
-	}
-	defer file.Close()
-
-	formatted, err := format.Source(buf.Bytes())
-	if err != nil {
-		return fmt.Errorf("format template [%s]: %s", fileName, err.Error())
-	}
-
-	_, err = file.Write(formatted)
-	if err != nil {
-		return fmt.Errorf("write file [%s]: %s", fileName, err.Error())
-	}
-
-	return nil
-}
-
 // //
 
 func goNamespace(s string) string {
@@ -91,8 +58,6 @@ func goNamespace(s string) string {
 	return string(first) + rest
 }
 
-//
-
 func nameObj(tableName string) string {
 	tableName = goNamespace(tableName)
 	return tableName + "Obj"
@@ -101,24 +66,4 @@ func nameObj(tableName string) string {
 func nameTableObj(tableName string) string {
 	tableName = goNamespace(tableName)
 	return tableName + "TableObj"
-}
-
-func nameColumType(l uint32, t generator.ColumType) string {
-	switch t {
-
-	case generator.ColumBool, generator.ColumByte, generator.ColumString:
-		return t.String()
-
-	case generator.ColumBytes:
-		if l == 0 {
-			return "[]byte"
-		} else {
-			return fmt.Sprintf("[%d]byte", l)
-		}
-
-	case generator.ColumDateTime:
-		return "time.Time"
-	}
-
-	return "any"
 }

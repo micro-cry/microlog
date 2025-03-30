@@ -2,7 +2,10 @@ package generator_template
 
 import (
 	_ "embed"
+	"fmt"
 	"microlog/tables/generator"
+	"path/filepath"
+	"strings"
 )
 
 // // // // // // // // // //
@@ -22,4 +25,33 @@ type ValuesObj struct {
 
 // //
 
-func (data *ValuesObj) Generator(dirPath string, table *generator.InfoTableObj) error {}
+func (data *ValuesObj) Generator(dirPath string, table *generator.InfoTableObj) error {
+
+	for _, column := range table.Columns {
+		data.ConstArr = append(data.ConstArr, fmt.Sprintf(
+			"Name%s %s = \"%s\"",
+			goNamespace(column.Name), TypeColumnName, column.Name,
+		))
+	}
+
+	for _, column := range table.Columns {
+		var strBuf strings.Builder
+
+		strBuf.WriteString(fmt.Sprintf("Name%s: ", goNamespace(column.Name)))
+		strBuf.WriteString("\"")
+
+		if column.Children == nil {
+			strBuf.WriteString(nameColumType(column.Length, column.Type))
+		} else {
+			strBuf.WriteString(nameColumType(column.Children.Column.Length, column.Children.Column.Type))
+		}
+
+		strBuf.WriteString("\",")
+
+		data.MapArr = append(data.MapArr, strBuf.String())
+	}
+
+	// //
+
+	return writeFileFromTemplate(filepath.Join(dirPath, "values.go"), ValuesFile, data)
+}

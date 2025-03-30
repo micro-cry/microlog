@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
+	"microlog/tables/generator"
 	"os"
 	"path/filepath"
 	"strings"
@@ -12,6 +13,13 @@ import (
 )
 
 // // // // // // // // // //
+
+const (
+	DirPrefix      = "table_"
+	TypeColumnName = "ColumnNameType"
+)
+
+//
 
 func goNamespace(s string) string {
 	if len(s) == 0 {
@@ -22,6 +30,36 @@ func goNamespace(s string) string {
 	first := unicode.ToUpper(runes[0])
 	rest := strings.ToLower(string(runes[1:]))
 	return string(first) + rest
+}
+
+func nameObj(tableName string) string {
+	tableName = goNamespace(tableName)
+	return tableName + "Obj"
+}
+
+func nameTableObj(tableName string) string {
+	tableName = goNamespace(tableName)
+	return tableName + "TableObj"
+}
+
+func nameColumType(l uint32, t generator.ColumType) string {
+	switch t {
+
+	case generator.ColumBool, generator.ColumByte, generator.ColumString:
+		return t.String()
+
+	case generator.ColumBytes:
+		if l == 0 {
+			return "[]byte"
+		} else {
+			return fmt.Sprintf("[%d]byte", l)
+		}
+
+	case generator.ColumDateTime:
+		return "time.Time"
+	}
+
+	return "any"
 }
 
 // //
