@@ -1,9 +1,13 @@
 package file_go
 
 import (
+	"bytes"
 	"fmt"
 	"microlog/tables/generator"
+	"microlog/tables/generator/file_go/generator_template"
 	"path/filepath"
+	"strings"
+	"text/template"
 )
 
 // // // // // // // // // //
@@ -13,7 +17,12 @@ func init() {
 }
 
 func generateStruct(dirPath string, table *generator.InfoTableObj) error {
-	importArr := make([]string, 0)
+	data := generator_template.StructObj{
+		PackageName:    filepath.Base(dirPath),
+		ColumnNameType: TypeColumnName,
+		GoTableName:    goNamespace(table.Name),
+	}
+
 	mapInc := map[generator.ColumType]string{
 		generator.ColumDateTime: "time",
 	}
@@ -21,42 +30,29 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 	for _, column := range table.Columns {
 		s, o := mapInc[column.Type]
 		if o && s != "" {
-			importArr = append(importArr, s)
+			data.ImportArr = append(data.ImportArr, s)
 			mapInc[column.Type] = ""
 		}
 
 		if column.Children != nil {
-			importArr = append(importArr, fmt.Sprintf("microlog/tables/%s%s", DirPrefix, column.Children.Table.Name))
+			data.ImportArr = append(data.ImportArr, fmt.Sprintf("microlog/tables/%s%s", DirPrefix, column.Children.Table.Name))
 		}
 	}
 
 	// //
 
-	buf := newBuf(filepath.Base(dirPath))
-
-	buf.WriteImports(importArr...)
-	buf.WriteSeparator(8)
-
-	// //
-
-	buf.WriteString("type " + TypeColumnName + " string\n\n")
-
-	buf.WriteString("type ")
-	buf.WriteString(nameObj(table.Name))
-	buf.WriteString(" struct {\n")
-
 	for _, column := range table.Columns {
-		buf.WriteString("\t")
+		var strBuf strings.Builder
 
-		buf.WriteString(goNamespace(column.Name))
-		buf.WriteString("\t")
+		strBuf.WriteString(goNamespace(column.Name))
+		strBuf.WriteString("\t")
 
 		if column.Children == nil {
-			buf.WriteString(nameColumType(column.Length, column.Type))
-			buf.WriteString("\t")
+			strBuf.WriteString(nameColumType(column.Length, column.Type))
+			strBuf.WriteString("\t")
 
 		} else {
-			buf.WriteString(fmt.Sprintf(
+			strBuf.WriteString(fmt.Sprintf(
 				"*%s%s.%sObj\t",
 				DirPrefix,
 				column.Children.Table.Name,
@@ -64,46 +60,47 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 			))
 		}
 
-		buf.WriteString(fmt.Sprintf("`json:\"%s\"`\t", column.Name))
+		strBuf.WriteString(fmt.Sprintf("`json:\"%s\"`\t", column.Name))
 
-		buf.WriteString("\n")
+		data.ObjArr = append(data.ObjArr, strBuf.String())
 	}
 
-	buf.WriteString("}\n")
-
-	// //
-
-	buf.WriteString("type ")
-	buf.WriteString(nameTableObj(table.Name))
-	buf.WriteString(" struct {\n")
-
 	for _, column := range table.Columns {
-		buf.WriteString("\t")
+		var strBuf strings.Builder
 
-		buf.WriteString(goNamespace(column.Name))
-		buf.WriteString("\t")
+		strBuf.WriteString(goNamespace(column.Name))
+		strBuf.WriteString("\t")
 
 		if column.Children == nil {
-			buf.WriteString(nameColumType(column.Length, column.Type))
-			buf.WriteString("\t")
+			strBuf.WriteString(nameColumType(column.Length, column.Type))
+			strBuf.WriteString("\t")
 
 		} else {
-			buf.WriteString(nameColumType(column.Children.Column.Length, column.Children.Column.Type))
-			buf.WriteString("\t")
+			strBuf.WriteString(nameColumType(column.Children.Column.Length, column.Children.Column.Type))
+			strBuf.WriteString("\t")
 		}
 
 		if column.Key != generator.KeyNone {
-			buf.WriteString(fmt.Sprintf("//*%s", column.Key.String()))
+			strBuf.WriteString(fmt.Sprintf("//*%s", column.Key.String()))
 		} else if column.Children != nil {
-			buf.WriteString(fmt.Sprintf("//%s", generator.KeyIndex.String()))
+			strBuf.WriteString(fmt.Sprintf("//%s", generator.KeyIndex.String()))
 		}
 
-		buf.WriteString("\n")
+		data.TableObjArr = append(data.TableObjArr, strBuf.String())
 	}
 
-	buf.WriteString("}\n")
-
 	// //
+
+	t, err := template.New(DirPrefix + table.Name).Parse(generator_template.StructFile)
+	if err != nil {
+		return fmt.Errorf("generate struct template error: %v", err)
+	}
+
+	var buf bytes.Buffer
+	err = t.Execute(&buf, data)
+	if err != nil {
+		return err
+	}
 
 	return writeGoFile(filepath.Join(dirPath, "struct.go"), buf.Bytes())
 }
