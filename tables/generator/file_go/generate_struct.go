@@ -47,8 +47,8 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 	buf.WriteString("type " + TypeColumnName + " string\n\n")
 
 	buf.WriteString("type ")
-	buf.WriteString(goNamespace(table.Name))
-	buf.WriteString("Obj struct {\n")
+	buf.WriteString(nameObj(table.Name))
+	buf.WriteString(" struct {\n")
 
 	for _, column := range table.Columns {
 		buf.WriteString("\t")
@@ -79,8 +79,8 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 	// //
 
 	buf.WriteString("type ")
-	buf.WriteString(goNamespace(table.Name))
-	buf.WriteString("TableObj struct {\n")
+	buf.WriteString(nameTableObj(table.Name))
+	buf.WriteString(" struct {\n")
 
 	for _, column := range table.Columns {
 		buf.WriteString("\t")

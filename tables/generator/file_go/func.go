@@ -20,7 +20,7 @@ func clearOldDir(pathToDir string) error {
 	}
 
 	for _, item := range items {
-		if item.IsDir() {
+		if item.IsDir() && len(item.Name()) > len(DirPrefix) {
 			if item.Name()[:len(DirPrefix)] == DirPrefix {
 				fullPath := filepath.Join(pathToDir, item.Name())
 				err = os.RemoveAll(fullPath)
@@ -53,6 +53,16 @@ func goNamespace(s string) string {
 	first := unicode.ToUpper(runes[0])
 	rest := strings.ToLower(string(runes[1:]))
 	return string(first) + rest
+}
+
+func nameObj(tableName string) string {
+	tableName = goNamespace(tableName)
+	return tableName + "Obj"
+}
+
+func nameTableObj(tableName string) string {
+	tableName = goNamespace(tableName)
+	return tableName + "TableObj"
 }
 
 // //

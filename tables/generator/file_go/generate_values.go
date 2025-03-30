@@ -13,6 +13,8 @@ func generateValues(dirPath string, table *generator.InfoTableObj) error {
 	var buf bytes.Buffer
 	setHeaderGo(filepath.Base(dirPath), &buf)
 
+	buf.WriteString("import \"microlog/tables\"\n")
+
 	setSeparator(&buf, 8)
 
 	// //
@@ -26,7 +28,7 @@ func generateValues(dirPath string, table *generator.InfoTableObj) error {
 	}
 	buf.WriteString(")\n\n")
 
-	buf.WriteString("var NameToTypeMap = map[" + TypeColumnName + "]string {\n")
+	buf.WriteString("var NameToTypeMap = map[tables.ColumnNameInterface]string {\n")
 	for _, column := range table.Columns {
 		goName := fmt.Sprintf("Name%s", goNamespace(column.Name))
 		buf.WriteString(fmt.Sprintf("\t%s: \"", goName))
