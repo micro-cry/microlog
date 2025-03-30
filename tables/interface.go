@@ -25,6 +25,8 @@ type DataTableInterface interface {
 // //
 
 type GoFuncGeneratorInterface interface {
+	Ping() error
+
 	TableCheck() error
 	TableCreate() error
 	TableClear() error
