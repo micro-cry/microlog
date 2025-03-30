@@ -16,7 +16,7 @@ func generateSQLiteTable(dirPath string, table *generator.InfoTableObj) error {
 
 	importArr := []string{}
 
-	buf.WriteImports(importArr)
+	buf.WriteImports(importArr...)
 	buf.WriteSeparator(8)
 
 	// //

@@ -16,11 +16,7 @@ func init() {
 func generateFuncTest(dirPath string, table *generator.InfoTableObj) error {
 	buf := newBuf(filepath.Base(dirPath))
 
-	importArr := []string{
-		"testing",
-	}
-
-	buf.WriteImports(importArr)
+	buf.WriteImports("testing")
 	buf.WriteSeparator(8)
 
 	// //

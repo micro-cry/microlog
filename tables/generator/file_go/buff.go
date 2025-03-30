@@ -32,17 +32,28 @@ func (obj *bufObj) Bytes() []byte {
 
 // //
 
-func (obj *bufObj) WriteString(text string) {
-	obj.buf.Write([]byte(text))
+func (obj *bufObj) WriteString(text ...string) {
+	l := len(text)
+	if l == 0 {
+		return
+	}
+
+	if l == 1 {
+		obj.buf.Write([]byte(text[0]))
+	} else {
+		obj.buf.Write([]byte(strings.Join(text, " ")))
+	}
 }
 
-func (obj *bufObj) WriteLine(text string) {
-	obj.buf.Write([]byte(text + "\n"))
+func (obj *bufObj) WriteLine(text ...string) {
+	obj.WriteString(text...)
+	obj.buf.WriteString("\n")
 }
 
-func (obj *bufObj) WritePadLine(pad int, text string) {
-	obj.buf.Write([]byte(strings.Repeat("\t", pad)))
-	obj.buf.Write([]byte(text + "\n"))
+func (obj *bufObj) WritePadLine(pad int, text ...string) {
+	obj.buf.WriteString(strings.Repeat("\t", pad))
+	obj.WriteString(text...)
+	obj.buf.WriteString("\n")
 }
 
 func (obj *bufObj) WriteSeparator(sum int) {
@@ -51,16 +62,16 @@ func (obj *bufObj) WriteSeparator(sum int) {
 
 //
 
-func (obj *bufObj) WriteImports(importArr []string) {
-	l := len(importArr)
+func (obj *bufObj) WriteImports(imports ...string) {
+	l := len(imports)
 
 	if l > 0 {
 		if l == 1 {
-			obj.WriteLine(fmt.Sprintf("import \"%s\"", importArr[0]))
+			obj.WriteLine(fmt.Sprintf("import \"%s\"", imports[0]))
 
 		} else {
 			obj.WriteLine("import (")
-			for _, line := range importArr {
+			for _, line := range imports {
 				obj.WritePadLine(1, fmt.Sprintf("\"%s\"", line))
 			}
 			obj.WriteLine(")")

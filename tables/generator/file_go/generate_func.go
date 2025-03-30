@@ -20,7 +20,7 @@ func generateFunc(dirPath string, table *generator.InfoTableObj) error {
 		"microlog/tables",
 	}
 
-	buf.WriteImports(importArr)
+	buf.WriteImports(importArr...)
 	buf.WriteSeparator(8)
 
 	// //

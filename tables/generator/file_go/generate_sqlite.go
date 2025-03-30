@@ -21,7 +21,7 @@ func generateSQLite(dirPath string, table *generator.InfoTableObj) error {
 		"database/sql",
 	}
 
-	buf.WriteImports(importArr)
+	buf.WriteImports(importArr...)
 	buf.WriteSeparator(8)
 
 	// //

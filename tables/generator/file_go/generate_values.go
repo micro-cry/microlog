@@ -15,11 +15,7 @@ func init() {
 func generateValues(dirPath string, table *generator.InfoTableObj) error {
 	buf := newBuf(filepath.Base(dirPath))
 
-	importArr := []string{
-		"microlog/tables",
-	}
-
-	buf.WriteImports(importArr)
+	buf.WriteImports("microlog/tables")
 	buf.WriteSeparator(8)
 
 	// //

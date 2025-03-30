@@ -34,7 +34,7 @@ func generateStruct(dirPath string, table *generator.InfoTableObj) error {
 
 	buf := newBuf(filepath.Base(dirPath))
 
-	buf.WriteImports(importArr)
+	buf.WriteImports(importArr...)
 	buf.WriteSeparator(8)
 
 	// //
