@@ -46,7 +46,7 @@ func main() {
 		panic(fmt.Errorf("failed to read templates directory: %w", err))
 	}
 
-	pathToDir = strings.Split(pathToDir, "microlog/")[1]
+	pathToDir = "templates"
 	var filesArr []*TemplateFileObj
 
 	for _, file := range files {
