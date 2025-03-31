@@ -5,13 +5,11 @@ import (
 	"fmt"
 	"math/rand"
 	"microlog"
+	"microlog/generator_go"
 	"path/filepath"
 )
 
 // // // // // // // // // //
-
-//go:embed functest.tmpl
-var FuncTestFile string
 
 type FuncTestObj struct {
 	PackageName   string
@@ -32,5 +30,5 @@ func (data *FuncTestObj) Generator(dirPath string, table *microlog.InfoTableObj)
 	data.ColumnName = column
 	data.ColumnNameSQL = "`" + table.Name + "." + column + "`"
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "func_test.go"), FuncTestFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "func_test.go"), generator_go.FuncTestFile, data)
 }

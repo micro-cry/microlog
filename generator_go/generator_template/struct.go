@@ -4,14 +4,12 @@ import (
 	_ "embed"
 	"fmt"
 	"microlog"
+	"microlog/generator_go"
 	"path/filepath"
 	"strings"
 )
 
 // // // // // // // // // //
-
-//go:embed struct.tmpl
-var StructFile string
 
 type StructObj struct {
 	PackageName    string
@@ -105,5 +103,5 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 
 	// //
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "struct.go"), StructFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "struct.go"), generator_go.StructFile, data)
 }

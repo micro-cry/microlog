@@ -3,13 +3,11 @@ package generator_template
 import (
 	_ "embed"
 	"microlog"
+	"microlog/generator_go"
 	"path/filepath"
 )
 
 // // // // // // // // // //
-
-//go:embed sqlite.tmpl
-var SQLiteFile string
 
 type SQLiteObj struct {
 	PackageName   string
@@ -22,5 +20,5 @@ func (data *SQLiteObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 	data.PackageName = filepath.Base(dirPath)
 	data.SQLiteObjName = SQLitePrefix + "Obj"
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite.go"), SQLiteFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite.go"), generator_go.SQLiteFile, data)
 }

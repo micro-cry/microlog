@@ -3,14 +3,12 @@ package generator_template
 import (
 	_ "embed"
 	"microlog"
+	"microlog/generator_go"
 	"path/filepath"
 	"time"
 )
 
 // // // // // // // // // //
-
-//go:embed sqlite_get.tmpl
-var SQLiteGetFile string
 
 type SQLiteGetObj struct {
 	Global        GlobalDocInfoObj
@@ -67,5 +65,5 @@ func (data *SQLiteGetObj) Generator(dirPath string, table *microlog.InfoTableObj
 
 	//
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_get.go"), SQLiteGetFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_get.go"), generator_go.SQLiteGetFile, data)
 }

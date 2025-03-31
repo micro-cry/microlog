@@ -4,14 +4,12 @@ import (
 	_ "embed"
 	"fmt"
 	"microlog"
+	"microlog/generator_go"
 	"path/filepath"
 	"strings"
 )
 
 // // // // // // // // // //
-
-//go:embed values.tmpl
-var ValuesFile string
 
 type ValuesObj struct {
 	PackageName    string
@@ -62,5 +60,5 @@ func (data *ValuesObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 
 	// //
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "values.go"), ValuesFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "values.go"), generator_go.ValuesFile, data)
 }

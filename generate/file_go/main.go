@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"microlog/generator_go"
+	"microlog/generator_go/generator_template"
 	"microlog/parser"
 	"os"
 	"path/filepath"
@@ -35,7 +35,7 @@ func main() {
 		panic("no tables: " + filesPath)
 	}
 
-	err = generator_go.Generate(tables, "microlog", filepath.Join(rootDir, "TEMP"))
+	err = generator_template.Generate(tables, "microlog", filepath.Join(rootDir, "TEMP"))
 	if err != nil {
 		panic(err)
 	}

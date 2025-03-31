@@ -1,23 +1,23 @@
-package generator_go
+package generator_template
 
 import (
 	"microlog"
-	"microlog/generator_go/generator_template"
+	"microlog/generator_go"
 )
 
 // // // // // // // // // //
 
-var generatorArr = []GeneratorInterface{
-	new(generator_template.FuncObj),
-	new(generator_template.StructObj),
-	new(generator_template.ValuesObj),
+var generatorArr = []generator_go.GeneratorInterface{
+	new(FuncObj),
+	new(StructObj),
+	new(ValuesObj),
 
-	new(generator_template.FuncTestObj),
+	new(FuncTestObj),
 
-	new(generator_template.SQLiteObj),
-	new(generator_template.SQLiteGetObj),
-	new(generator_template.SQLiteOtherObj),
-	new(generator_template.SQLiteTableObj),
+	new(SQLiteObj),
+	new(SQLiteGetObj),
+	new(SQLiteOtherObj),
+	new(SQLiteTableObj),
 }
 
 //
