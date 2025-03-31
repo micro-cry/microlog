@@ -25,9 +25,17 @@ type FuncObj struct {
 
 	ChildrenArr []string
 	ParentArr   []string
+
+	rootDirName string
 }
 
 // //
+
+func NewFunc(rootDirName string) generator_go.GeneratorInterface {
+	obj := new(FuncObj)
+	obj.rootDirName = rootDirName
+	return obj
+}
 
 func (data *FuncObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)

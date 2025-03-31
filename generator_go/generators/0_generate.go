@@ -8,20 +8,18 @@ import (
 
 // // // // // // // // // //
 
-var generatorArr = []generator_go.GeneratorInterface{
-	new(FuncObj),
-	new(StructObj),
-	new(ValuesObj),
+var generatorArr = []func(string) generator_go.GeneratorInterface{
+	NewStruct,
+	NewValues,
+	NewFunc,
 
-	new(FuncTestObj),
+	NewFuncTest,
 
-	new(SQLiteObj),
-	new(SQLiteGetObj),
-	new(SQLiteOtherObj),
-	new(SQLiteTableObj),
+	NewSQLite,
+	NewSQLiteGet,
+	NewSQLiteOther,
+	NewSQLiteTable,
 }
-
-//
 
 func Generate(tables []microlog.InfoTableObj, rootDirName, pathToDir string) error {
 	err := generator_go.DirRemoveAll(pathToDir)
@@ -37,8 +35,8 @@ func Generate(tables []microlog.InfoTableObj, rootDirName, pathToDir string) err
 
 		//
 
-		for _, obj := range generatorArr {
-			if e := obj.Generator(newPath, &item); e != nil {
+		for _, f := range generatorArr {
+			if e := f(rootDirName).Generator(newPath, &item); e != nil {
 				return e
 			}
 		}

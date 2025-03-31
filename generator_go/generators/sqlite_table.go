@@ -14,9 +14,17 @@ type SQLiteTableObj struct {
 
 	PackageName   string
 	SQLiteObjName string
+
+	rootDirName string
 }
 
 // //
+
+func NewSQLiteTable(rootDirName string) generator_go.GeneratorInterface {
+	obj := new(SQLiteTableObj)
+	obj.rootDirName = rootDirName
+	return obj
+}
 
 func (data *SQLiteTableObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)

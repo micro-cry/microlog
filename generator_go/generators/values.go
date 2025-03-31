@@ -18,13 +18,19 @@ type ValuesObj struct {
 
 	ConstArr []*microlog.StructLineObj
 	Map      *microlog.TemplateMapObj
+
+	rootDirName string
 }
 
 // //
 
-func (data *ValuesObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
-	data = new(ValuesObj)
+func NewValues(rootDirName string) generator_go.GeneratorInterface {
+	obj := new(ValuesObj)
+	obj.rootDirName = rootDirName
+	return obj
+}
 
+func (data *ValuesObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
 	data.Global = microlog.FileGoValues.NewTemplate()
 

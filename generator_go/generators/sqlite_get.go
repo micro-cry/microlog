@@ -17,9 +17,17 @@ type SQLiteGetObj struct {
 
 	Data *microlog.TemplateStructObj
 	Map  *microlog.TemplateMapObj
+
+	rootDirName string
 }
 
 // //
+
+func NewSQLiteGet(rootDirName string) generator_go.GeneratorInterface {
+	obj := new(SQLiteGetObj)
+	obj.rootDirName = rootDirName
+	return obj
+}
 
 func (data *SQLiteGetObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)

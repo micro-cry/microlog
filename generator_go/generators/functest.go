@@ -19,9 +19,17 @@ type FuncTestObj struct {
 	TableName     string
 	ColumnName    string
 	ColumnNameSQL string
+
+	rootDirName string
 }
 
 // //
+
+func NewFuncTest(rootDirName string) generator_go.GeneratorInterface {
+	obj := new(FuncTestObj)
+	obj.rootDirName = rootDirName
+	return obj
+}
 
 func (data *FuncTestObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	column := table.Columns[rand.Intn(len(table.Columns))].Name
