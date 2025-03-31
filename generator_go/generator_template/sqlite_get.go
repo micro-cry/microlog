@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"microlog"
 	"path/filepath"
+	"time"
 )
 
 // // // // // // // // // //
@@ -12,7 +13,7 @@ import (
 var SQLiteGetFile string
 
 type SQLiteGetObj struct {
-	PackageName   string
+	Global        GlobalDocInfoObj
 	SQLiteObjName string
 
 	Data *TemplateStructObj
@@ -22,7 +23,16 @@ type SQLiteGetObj struct {
 // //
 
 func (data *SQLiteGetObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
-	data.PackageName = filepath.Base(dirPath)
+	data.Global.PackageName = filepath.Base(dirPath)
+	data.Global.TemplatePath = "sqlite_get.tmpl"
+	data.Global.GenerationTime = time.Now().Format(time.RFC3339)
+
+	data.Global.Params = make(map[string]string)
+	data.Global.Params["ver"] = "'" + microlog.GlobalVersion + "'"
+	data.Global.Params["name"] = "'" + microlog.GlobalName + "'"
+	data.Global.Params["commit_hash"] = "'" + microlog.GlobalHash[32:] + "'"
+	data.Global.Params["commit_date"] = "'" + microlog.GlobalDateUpdate + "'"
+
 	data.SQLiteObjName = SQLitePrefix + "Obj"
 
 	//

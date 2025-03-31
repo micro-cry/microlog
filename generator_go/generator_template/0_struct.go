@@ -2,6 +2,16 @@ package generator_template
 
 // // // // // // // // // //
 
+type GlobalDocInfoObj struct {
+	TemplatePath   string
+	GenerationTime string
+	Params         map[string]string
+
+	PackageName string
+}
+
+//
+
 type StructLineObj struct {
 	Name    string
 	Type    string
