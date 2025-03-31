@@ -16,16 +16,29 @@ import (
     {{end}}
 {{end}}
 
+{{$PrefixStruct := "Obj"}}
+{{$PrefixTableStruct := "TableObj"}}
+
 // // // // // // // //
 
-type {{.ColumnNameType}} string
+type ColumnNameType string
 
-type {{.GoTableName}}Obj struct {
-    {{range .ObjArr}} {{.}}
-    {{end}}
+{{- if .Obj.CommentStruct }}
+
+    // {{ .Obj.CommentStruct }}
+{{- end }}
+type {{ .Obj.NameStruct }}{{$PrefixStruct}} struct {
+{{- range .Obj.LinesArr }}
+    {{ .Name }} {{ .Type }} {{- if .Reflect }}`{{ .Reflect }}`{{ end }}{{- if .Comment }} // {{ .Comment }}{{ end }}
+{{- end }}
 }
 
-type {{.GoTableName}}TableObj struct {
-    {{range .TableObjArr}} {{.}}
-    {{end}}
+{{- if .TableObj.CommentStruct }}
+
+    // {{ .TableObj.CommentStruct }}
+{{- end }}
+type {{ .TableObj.NameStruct }}{{$PrefixTableStruct}} struct {
+{{- range .TableObj.LinesArr }}
+    {{ .Name }} {{ .Type }} {{- if .Reflect }}`{{ .Reflect }}`{{ end }}{{- if .Comment }} // {{ .Comment }}{{ end }}
+{{- end }}
 }
