@@ -65,5 +65,5 @@ func (data *SQLiteGetObj) Generator(dirPath string, table *microlog.InfoTableObj
 
 	//
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_get.go"), microlog.SQLiteGetFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_get.go"), microlog.FileGoSqliteGet.Data, data)
 }

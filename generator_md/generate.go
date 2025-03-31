@@ -65,7 +65,7 @@ func Generate(tablesArr []microlog.InfoTableObj, pathToFile string) error {
 
 	// //
 
-	return writeFileFromTemplate(pathToFile, microlog.MdTablesFile, data)
+	return writeFileFromTemplate(pathToFile, microlog.FileMdTablesStruct.Data, data)
 }
 
 // //
