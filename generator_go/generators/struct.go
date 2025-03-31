@@ -60,7 +60,7 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 		strBuf.WriteString("\t")
 
 		if column.Children == nil {
-			strBuf.WriteString(nameColumType(column.Length, column.Type))
+			strBuf.WriteString(column.TypeString())
 			strBuf.WriteString("\t")
 
 		} else {
@@ -84,11 +84,11 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 		strBuf.WriteString("\t")
 
 		if column.Children == nil {
-			strBuf.WriteString(nameColumType(column.Length, column.Type))
+			strBuf.WriteString(column.TypeString())
 			strBuf.WriteString("\t")
 
 		} else {
-			strBuf.WriteString(nameColumType(column.Children.Column.Length, column.Children.Column.Type))
+			strBuf.WriteString(column.Children.Column.TypeString())
 			strBuf.WriteString("\t")
 		}
 

@@ -4,35 +4,12 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
-	"microlog"
 	"os"
 	"path/filepath"
 	"text/template"
 )
 
 // // // // // // // // // //
-
-func nameColumType(l uint32, t microlog.ColumType) string {
-	switch t {
-
-	case microlog.ColumBool, microlog.ColumByte, microlog.ColumString:
-		return t.String()
-
-	case microlog.ColumBytes:
-		if l == 0 {
-			return "[]byte"
-		} else {
-			return fmt.Sprintf("[%d]byte", l)
-		}
-
-	case microlog.ColumDateTime:
-		return "time.Time"
-	}
-
-	return "any"
-}
-
-// //
 
 func writeFileFromTemplate(pathToFile string, textTemplate string, dataTemplate any) error {
 	fileName := filepath.Base(pathToFile)
