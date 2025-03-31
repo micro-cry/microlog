@@ -44,6 +44,8 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 
 	// //
 
+	importPath := generator_go.PathImport(data.rootDirName, dirPath)
+
 	mapInc := map[microlog.ColumType]string{
 		microlog.ColumDateTime: "time",
 	}
@@ -56,7 +58,10 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 		}
 
 		if column.Children != nil {
-			data.ImportArr = append(data.ImportArr, fmt.Sprintf("microlog/tables/%s%s", generator_go.DirPrefix, column.Children.Table.Name))
+			data.ImportArr = append(data.ImportArr, fmt.Sprintf(
+				"%s/%s%s",
+				importPath, generator_go.DirPrefix, column.Children.Table.Name,
+			))
 		}
 	}
 

@@ -8,8 +8,10 @@ package {{.PackageName}}
 
 import (
 	"encoding/json"
-	"microlog/tables"
+"microlog"
 )
+
+{{$NameConstTable := "Table"}}
 
 // // // // // // // //
 
@@ -18,7 +20,7 @@ func (name {{.ColumnTypeName}}) String() string {
 }
 
 func (name {{.ColumnTypeName}}) StringSQL() string {
-	return "`" + Table + "." + string(name) + "`"
+return "`" + {{$NameConstTable}} + "." + string(name) + "`"
 }
 
 func (name {{.ColumnTypeName}}) Type() string {
@@ -26,7 +28,7 @@ func (name {{.ColumnTypeName}}) Type() string {
 }
 
 func (name {{.ColumnTypeName}}) TableName() string {
-	return Table
+return {{$NameConstTable}}
 }
 
 // // // //
@@ -35,7 +37,7 @@ func (obj *{{.DataObjName}}) JSON() ([]byte, error) {
 	return json.Marshal(obj)
 }
 
-func (obj *{{.DataObjName}}) Children() tables.DataTableInterface {
+func (obj *{{.DataObjName}}) Children() microlog.DataTableInterface {
 	objTable := new({{.DataTableObjName}})
 
     {{range .ChildrenArr}} {{.}}
@@ -53,12 +55,12 @@ func (objTable *{{.DataTableObjName}}) TableName() string {
 	return {{.TableConstName}}
 }
 
-func (objTable *{{.DataTableObjName}}) TableColumns() map[tables.ColumnNameInterface]string {
+func (objTable *{{.DataTableObjName}}) TableColumns() map[microlog.ColumnNameInterface]string {
 	return {{.MapName}}
 }
 
 {{.ParentComment}}
-func (objTable *{{.DataTableObjName}}) Parent() tables.DataInterface {
+func (objTable *{{.DataTableObjName}}) Parent() microlog.DataInterface {
 	obj := new({{.DataObjName}})
 
     {{range .ParentArr}} {{.}}

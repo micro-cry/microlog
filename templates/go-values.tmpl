@@ -16,7 +16,6 @@ package {{.PackageName}}
 	{{end}}
 {{end}}
 
-{{$PrefixMap := "Map"}}
 {{$PrefixName := "Name"}}
 {{$NameConstTable := "Table"}}
 
@@ -34,7 +33,7 @@ const (
 
 	// {{ .Map.CommentMap }}
 {{- end }}
-var {{ .Map.NameMap }}{{$PrefixMap}} = map[{{ .Map.TypeKey }}]{{ .Map.TypeValue }}{
+var {{ .Map.NameMap }} = map[{{ .Map.TypeKey }}]{{ .Map.TypeValue }}{
 {{- range .Map.ValuesArr }}
 	{{$PrefixName}}{{ .Key }}: "{{ .Value }}",{{- if .Comment }} // {{ .Comment }}{{ end }}
 {{- end }}

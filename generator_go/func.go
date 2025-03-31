@@ -3,6 +3,7 @@ package generator_go
 import (
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // // // // // // // // // //
@@ -36,4 +37,24 @@ func DirCreate(pathToDir, dirName string) (string, error) {
 	}
 
 	return newPath, nil
+}
+
+func PathImport(rootDirName, dirPath string) string {
+	bufPath := strings.Split(dirPath, "/")
+	for pos, path := range bufPath {
+		if path == rootDirName {
+			break
+		}
+		bufPath[pos] = ""
+	}
+	bufPath[len(bufPath)-1] = ""
+
+	var importPath []string
+	for _, s := range bufPath {
+		if s != "" {
+			importPath = append(importPath, s)
+		}
+	}
+
+	return strings.Join(importPath, "/")
 }
