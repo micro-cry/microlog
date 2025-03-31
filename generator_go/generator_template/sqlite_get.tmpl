@@ -4,3 +4,13 @@
 package {{.PackageName}}
 
 // // // // // // // //
+
+{{- if .Data.CommentStruct }}
+
+    // {{ .Data.CommentStruct }}
+{{- end }}
+type {{ .Data.NameStruct }}Obj struct {
+{{- range .Data.LinesArr }}
+    {{ .Name }} {{ .Type }} {{- if .Reflect }}`{{ .Reflect }}`{{ end }}{{- if .Comment }} // {{ .Comment }}{{ end }}
+{{- end }}
+}
