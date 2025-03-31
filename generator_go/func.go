@@ -41,8 +41,12 @@ func DirCreate(pathToDir, dirName string) (string, error) {
 
 func PathImport(rootDirName, dirPath string) string {
 	bufPath := strings.Split(dirPath, "/")
+
 	for pos, path := range bufPath {
 		if path == rootDirName {
+			if pos < len(bufPath)-1 || bufPath[pos+1] == rootDirName {
+				bufPath[pos+1] = ""
+			}
 			break
 		}
 		bufPath[pos] = ""
