@@ -2,11 +2,9 @@ package generators
 
 import (
 	_ "embed"
-	"fmt"
 	"microlog"
 	"microlog/generator_go"
 	"path/filepath"
-	"strings"
 )
 
 // // // // // // // // // //
@@ -14,52 +12,51 @@ import (
 type ValuesObj struct {
 	Global *microlog.GlobalDocInfoObj
 
-	PackageName    string
-	TableName      string
-	TableConstName string
-	MapName        string
+	PackageName string
+	TableName   string
+	ImportArr   []string
 
-	ConstArr []string
-	MapArr   []string
+	ConstArr []*microlog.StructLineObj
+	Map      *microlog.TemplateMapObj
 }
 
 // //
 
 func (data *ValuesObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
+	data = new(ValuesObj)
+
 	data.PackageName = filepath.Base(dirPath)
 	data.Global = microlog.FileGoValues.NewTemplate()
 
 	data.TableName = table.Name
-	data.TableConstName = generator_go.TableConstName
-	data.MapName = generator_go.TableMapName
 
-	data.ConstArr = make([]string, 0)
-	data.MapArr = make([]string, 0)
+	data.Map = new(microlog.TemplateMapObj)
+	data.Map.NameMap = generator_go.TableMapName
+	data.Map.TypeKey = "microlog.ColumnNameInterface"
+	data.Map.TypeValue = "string"
+
+	data.ImportArr = append(data.ImportArr, "microlog")
 
 	// //
 
 	for _, column := range table.Columns {
-		data.ConstArr = append(data.ConstArr, fmt.Sprintf(
-			"%s%s %s = \"%s\"",
-			generator_go.ColumnNamePrefix, microlog.NameValGo(column.Name), generator_go.TypeColumnName, column.Name,
-		))
-	}
+		lineConst := new(microlog.StructLineObj)
+		lineMap := new(microlog.MapLineObj)
 
-	for _, column := range table.Columns {
-		var strBuf strings.Builder
+		lineConst.Name = microlog.NameValGo(column.Name)
+		lineMap.Key = microlog.NameValGo(column.Name)
 
-		strBuf.WriteString(fmt.Sprintf("%s%s: ", generator_go.ColumnNamePrefix, microlog.NameValGo(column.Name)))
-		strBuf.WriteString("\"")
+		lineConst.Type = generator_go.TypeColumnName
+		lineConst.Value = column.Name
 
 		if column.Children == nil {
-			strBuf.WriteString(column.TypeString())
+			lineMap.Value = column.TypeString()
 		} else {
-			strBuf.WriteString(column.Children.Column.TypeString())
+			lineMap.Value = column.Children.Column.TypeString()
 		}
 
-		strBuf.WriteString("\",")
-
-		data.MapArr = append(data.MapArr, strBuf.String())
+		data.ConstArr = append(data.ConstArr, lineConst)
+		data.Map.ValuesArr = append(data.Map.ValuesArr, lineMap)
 	}
 
 	// //

@@ -13,8 +13,9 @@ import (
 type StructObj struct {
 	Global *microlog.GlobalDocInfoObj
 
-	PackageName string
-	ImportArr   []string
+	PackageName    string
+	TypeColumnName string
+	ImportArr      []string
 
 	Obj      *microlog.TemplateStructObj
 	TableObj *microlog.TemplateStructObj
@@ -25,8 +26,8 @@ type StructObj struct {
 func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
 	data.Global = microlog.FileGoStruct.NewTemplate()
+	data.TypeColumnName = generator_go.TypeColumnName
 
-	data.ImportArr = make([]string, 0)
 	data.TableObj = new(microlog.TemplateStructObj)
 	data.Obj = new(microlog.TemplateStructObj)
 
@@ -54,45 +55,35 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 	// //
 
 	for _, column := range table.Columns {
-		lineBuf := new(microlog.StructLineObj)
+		lineObj := new(microlog.StructLineObj)
+		lineTableObj := new(microlog.StructLineObj)
 
-		lineBuf.Name = microlog.NameValGo(column.Name)
+		lineObj.Name = microlog.NameValGo(column.Name)
+		lineTableObj.Name = microlog.NameValGo(column.Name)
 
 		if column.Children == nil {
-			lineBuf.Type = column.TypeString()
+			lineObj.Type = column.TypeString()
+			lineTableObj.Type = column.TypeString()
 		} else {
-			lineBuf.Type = fmt.Sprintf(
+			lineObj.Type = fmt.Sprintf(
 				"*%s%s.%sObj\t",
 				generator_go.DirPrefix,
 				column.Children.Table.Name,
 				microlog.NameValGo(column.Children.Table.Name),
 			)
+			lineTableObj.Type = column.Children.Column.TypeString()
 		}
 
-		lineBuf.Reflect = fmt.Sprintf("json:\"%s\"", column.Name)
-
-		data.Obj.LinesArr = append(data.Obj.LinesArr, lineBuf)
-	}
-
-	for _, column := range table.Columns {
-		lineBuf := new(microlog.StructLineObj)
-
-		lineBuf.Name = microlog.NameValGo(column.Name)
-
-		if column.Children == nil {
-			lineBuf.Type = column.TypeString()
-
-		} else {
-			lineBuf.Type = column.Children.Column.TypeString()
-		}
+		lineObj.Reflect = fmt.Sprintf("json:\"%s\"", column.Name)
 
 		if column.Key != microlog.KeyNone {
-			lineBuf.Comment = column.Key.String()
+			lineTableObj.Comment = column.Key.String()
 		} else if column.Children != nil {
-			lineBuf.Comment = "*" + microlog.KeyIndex.String()
+			lineTableObj.Comment = "*" + microlog.KeyIndex.String()
 		}
 
-		data.TableObj.LinesArr = append(data.TableObj.LinesArr, lineBuf)
+		data.Obj.LinesArr = append(data.Obj.LinesArr, lineObj)
+		data.TableObj.LinesArr = append(data.TableObj.LinesArr, lineTableObj)
 	}
 
 	// //

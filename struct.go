@@ -50,6 +50,7 @@ type GlobalDocInfoObj struct {
 type StructLineObj struct {
 	Name    string
 	Type    string
+	Value   string
 	Reflect string
 	Comment string
 }

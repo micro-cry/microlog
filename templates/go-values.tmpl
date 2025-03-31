@@ -6,18 +6,36 @@
 
 package {{.PackageName}}
 
-import "microlog/tables"
+{{if gt (len .ImportArr) 0}}
+	{{if eq (len .ImportArr) 1}}
+		import "{{index .ImportArr 0}}"
+	{{else}}
+		import (
+		{{range .ImportArr}}    "{{.}}"
+		{{end}})
+	{{end}}
+{{end}}
+
+{{$PrefixMap := "Map"}}
+{{$PrefixName := "Name"}}
+{{$NameConstTable := "Table"}}
 
 // // // // // // // //
 
-const (
-	{{.TableConstName}} = "{{.TableName}}"
+const {{$NameConstTable}} = "{{.TableName}}"
 
-	{{range .ConstArr}} {{.}}
-    {{end}}
+const (
+{{- range .ConstArr }}
+	{{$PrefixName}}{{ .Name }} {{ .Type }} = "{{ .Value }}"{{- if .Comment }} // {{ .Comment }}{{ end }}
+{{- end }}
 )
 
-var {{.MapName}} = map[tables.ColumnNameInterface]string{
-	{{range .MapArr}} {{.}}
-    {{end}}
+{{- if .Map.CommentMap }}
+
+	// {{ .Map.CommentMap }}
+{{- end }}
+var {{ .Map.NameMap }}{{$PrefixMap}} = map[{{ .Map.TypeKey }}]{{ .Map.TypeValue }}{
+{{- range .Map.ValuesArr }}
+	{{$PrefixName}}{{ .Key }}: "{{ .Value }}",{{- if .Comment }} // {{ .Comment }}{{ end }}
+{{- end }}
 }
