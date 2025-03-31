@@ -60,5 +60,5 @@ func (data *ValuesObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 
 	// //
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "values.go"), generator_go.ValuesFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "values.go"), microlog.ValuesFile, data)
 }

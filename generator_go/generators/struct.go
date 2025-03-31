@@ -103,5 +103,5 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 
 	// //
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "struct.go"), generator_go.StructFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "struct.go"), microlog.StructFile, data)
 }

@@ -73,5 +73,5 @@ func (data *FuncObj) Generator(dirPath string, table *microlog.InfoTableObj) err
 
 	// //
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "func.go"), generator_go.FuncFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "func.go"), microlog.FuncFile, data)
 }

@@ -13,9 +13,6 @@ import (
 
 // // // // // // // // // //
 
-//go:embed md-tables-struct.tmpl
-var MdTablesFile string
-
 type TableObj struct {
 	Title          string
 	ColumnsNameArr []string
@@ -68,7 +65,7 @@ func Generate(tablesArr []microlog.InfoTableObj, pathToFile string) error {
 
 	// //
 
-	return writeFileFromTemplate(pathToFile, MdTablesFile, data)
+	return writeFileFromTemplate(pathToFile, microlog.MdTablesFile, data)
 }
 
 // //

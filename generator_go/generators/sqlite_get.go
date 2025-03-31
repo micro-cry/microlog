@@ -22,7 +22,7 @@ type SQLiteGetObj struct {
 
 func (data *SQLiteGetObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.Global.PackageName = filepath.Base(dirPath)
-	data.Global.TemplatePath = "sqlite_get.tmpl"
+	data.Global.TemplatePath = "go-sqlite_get.tmpl"
 	data.Global.GenerationTime = time.Now().Format(time.RFC3339)
 
 	data.Global.Params = make(map[string]string)
@@ -65,5 +65,5 @@ func (data *SQLiteGetObj) Generator(dirPath string, table *microlog.InfoTableObj
 
 	//
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_get.go"), generator_go.SQLiteGetFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_get.go"), microlog.SQLiteGetFile, data)
 }

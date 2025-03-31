@@ -20,5 +20,5 @@ func (data *SQLiteObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 	data.PackageName = filepath.Base(dirPath)
 	data.SQLiteObjName = generator_go.SQLitePrefix + "Obj"
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite.go"), generator_go.SQLiteFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite.go"), microlog.SQLiteFile, data)
 }

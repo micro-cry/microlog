@@ -30,5 +30,5 @@ func (data *FuncTestObj) Generator(dirPath string, table *microlog.InfoTableObj)
 	data.ColumnName = column
 	data.ColumnNameSQL = "`" + table.Name + "." + column + "`"
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "func_test.go"), generator_go.FuncTestFile, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, "func_test.go"), microlog.FuncTestFile, data)
 }
