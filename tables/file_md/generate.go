@@ -9,7 +9,7 @@ import (
 
 // // // // // // // // // //
 
-func Generate(tables []tables.InfoTableObj, pathToFile string) error {
+func Generate(tablesArr []tables.InfoTableObj, pathToFile string) error {
 	var buf bytes.Buffer
 	buf.WriteString("# The overall structure of the tables\n")
 	buf.WriteString("This file is generated automatically\n\n")
@@ -17,7 +17,7 @@ func Generate(tables []tables.InfoTableObj, pathToFile string) error {
 
 	// //
 
-	for _, table := range tables {
+	for _, table := range tablesArr {
 		buf.WriteString(fmt.Sprintf("## %s\n\n", table.Name))
 		lineBuf := []string{"|", "|", "|", "|"}
 
