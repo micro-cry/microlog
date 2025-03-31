@@ -1,7 +1,7 @@
 package file_go
 
 import (
-	"microlog/tables/generator/file_go/generator_template"
+	"microlog/tables/file_go/generator_template"
 	"os"
 	"path/filepath"
 )

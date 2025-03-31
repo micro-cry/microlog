@@ -3,13 +3,13 @@ package file_md
 import (
 	"bytes"
 	"fmt"
-	"microlog/tables/generator"
+	"microlog/tables"
 	"os"
 )
 
 // // // // // // // // // //
 
-func Generate(tables []generator.InfoTableObj, pathToFile string) error {
+func Generate(tables []tables.InfoTableObj, pathToFile string) error {
 	var buf bytes.Buffer
 	buf.WriteString("# The overall structure of the tables\n")
 	buf.WriteString("This file is generated automatically\n\n")
@@ -38,10 +38,10 @@ func Generate(tables []generator.InfoTableObj, pathToFile string) error {
 			}
 			lineBuf[2] += " |"
 
-			if column.Key != generator.KeyNone {
+			if column.Key != tables.KeyNone {
 				lineBuf[3] += fmt.Sprintf(" _%s_ |", column.Key.String())
 			} else if column.Children != nil {
-				lineBuf[3] += fmt.Sprintf(" _*%s_ |", generator.KeyIndex.String())
+				lineBuf[3] += fmt.Sprintf(" _*%s_ |", tables.KeyIndex.String())
 			} else {
 				lineBuf[3] += " - |"
 			}

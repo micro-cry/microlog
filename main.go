@@ -1,4 +1,4 @@
 package microlog
 
-//go:generate go run cli/generate/file_md/main.go
-//go:generate go run cli/generate/file_go/main.go
+//go:generate go run generate/file_md/main.go
+//go:generate go run generate/file_go/main.go

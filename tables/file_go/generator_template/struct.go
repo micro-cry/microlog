@@ -3,7 +3,7 @@ package generator_template
 import (
 	_ "embed"
 	"fmt"
-	"microlog/tables/generator"
+	"microlog/tables"
 	"path/filepath"
 	"strings"
 )
@@ -26,7 +26,7 @@ type StructObj struct {
 
 // //
 
-func (data *StructObj) Generator(dirPath string, table *generator.InfoTableObj) error {
+func (data *StructObj) Generator(dirPath string, table *tables.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
 	data.ColumnNameType = TypeColumnName
 	data.GoTableName = goNamespace(table.Name)
@@ -37,8 +37,8 @@ func (data *StructObj) Generator(dirPath string, table *generator.InfoTableObj) 
 
 	// //
 
-	mapInc := map[generator.ColumType]string{
-		generator.ColumDateTime: "time",
+	mapInc := map[tables.ColumType]string{
+		tables.ColumDateTime: "time",
 	}
 
 	for _, column := range table.Columns {
@@ -94,10 +94,10 @@ func (data *StructObj) Generator(dirPath string, table *generator.InfoTableObj) 
 			strBuf.WriteString("\t")
 		}
 
-		if column.Key != generator.KeyNone {
+		if column.Key != tables.KeyNone {
 			strBuf.WriteString(fmt.Sprintf("//*%s", column.Key.String()))
 		} else if column.Children != nil {
-			strBuf.WriteString(fmt.Sprintf("//%s", generator.KeyIndex.String()))
+			strBuf.WriteString(fmt.Sprintf("//%s", tables.KeyIndex.String()))
 		}
 
 		data.TableObjArr = append(data.TableObjArr, strBuf.String())

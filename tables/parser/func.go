@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"gopkg.in/yaml.v3"
-	"microlog/tables/generator"
+	"microlog/tables"
 	"os"
 	"path/filepath"
 	"strings"
@@ -121,8 +121,8 @@ func fileName(pathToFile string) string {
 
 //
 
-func parseColumType(name string) generator.ColumType {
-	for t, n := range generator.ColumMap {
+func parseColumType(name string) tables.ColumType {
+	for t, n := range tables.ColumMap {
 		if n == name {
 			return t
 		}
@@ -130,8 +130,8 @@ func parseColumType(name string) generator.ColumType {
 	return 0
 }
 
-func parseKeyType(name string) generator.KeyType {
-	for t, n := range generator.KeyMap {
+func parseKeyType(name string) tables.KeyType {
+	for t, n := range tables.KeyMap {
 		if n == name {
 			return t
 		}
