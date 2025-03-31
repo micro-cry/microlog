@@ -72,6 +72,7 @@ func Generate(tablesArr []microlog.InfoTableObj, pathToFile string) error {
 
 func writeFileFromTemplate(pathToFile string, textTemplate string, dataTemplate any) error {
 	fileName := filepath.Base(pathToFile)
+	os.MkdirAll(filepath.Dir(pathToFile), 0755)
 
 	t, err := template.New(fileName).Parse(textTemplate)
 	if err != nil {

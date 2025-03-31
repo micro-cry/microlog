@@ -31,7 +31,7 @@ func DirRemoveAll(pathToDir string) error {
 
 func DirCreate(pathToDir, dirName string) (string, error) {
 	newPath := filepath.Join(pathToDir, DirPrefix+dirName)
-	err := os.Mkdir(newPath, 0755)
+	err := os.MkdirAll(newPath, 0755)
 	if err != nil {
 		return "", err
 	}
