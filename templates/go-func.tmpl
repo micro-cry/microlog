@@ -12,6 +12,8 @@ import (
 )
 
 {{$NameConstTable := "Table"}}
+{{$PrefixStruct := "Obj"}}
+{{$PrefixTableStruct := "TableObj"}}
 
 // // // // // // // //
 
@@ -33,12 +35,12 @@ return {{$NameConstTable}}
 
 // // // //
 
-func (obj *{{.DataObjName}}) JSON() ([]byte, error) {
+func (obj *{{.GoTableName}}{{$PrefixStruct}}) JSON() ([]byte, error) {
 	return json.Marshal(obj)
 }
 
-func (obj *{{.DataObjName}}) Children() microlog.DataTableInterface {
-	objTable := new({{.DataTableObjName}})
+func (obj *{{.GoTableName}}{{$PrefixStruct}}) Children() microlog.DataTableInterface {
+objTable := new({{.GoTableName}}{{$PrefixTableStruct}})
 
     {{range .ChildrenArr}} {{.}}
     {{end}}
@@ -47,21 +49,21 @@ func (obj *{{.DataObjName}}) Children() microlog.DataTableInterface {
 
 // //
 
-func (objTable *{{.DataTableObjName}}) JSON() ([]byte, error) {
+func (objTable *{{.GoTableName}}{{$PrefixTableStruct}}) JSON() ([]byte, error) {
 	return json.Marshal(objTable)
 }
 
-func (objTable *{{.DataTableObjName}}) TableName() string {
-	return {{.TableConstName}}
+func (objTable *{{.GoTableName}}{{$PrefixTableStruct}}) TableName() string {
+return {{$NameConstTable}}
 }
 
-func (objTable *{{.DataTableObjName}}) TableColumns() map[microlog.ColumnNameInterface]string {
+func (objTable *{{.GoTableName}}{{$PrefixTableStruct}}) TableColumns() map[microlog.ColumnNameInterface]string {
 	return {{.MapName}}
 }
 
 {{.ParentComment}}
-func (objTable *{{.DataTableObjName}}) Parent() microlog.DataInterface {
-	obj := new({{.DataObjName}})
+func (objTable *{{.GoTableName}}{{$PrefixTableStruct}}) Parent() microlog.DataInterface {
+obj := new({{.GoTableName}}{{$PrefixStruct}})
 
     {{range .ParentArr}} {{.}}
     {{end}}

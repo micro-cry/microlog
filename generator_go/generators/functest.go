@@ -28,6 +28,7 @@ type FuncTestObj struct {
 func NewFuncTest(rootDirName string) generator_go.GeneratorInterface {
 	obj := new(FuncTestObj)
 	obj.rootDirName = rootDirName
+	obj.Global = microlog.FileGoFuncTest.NewTemplate()
 	return obj
 }
 
@@ -35,9 +36,7 @@ func (data *FuncTestObj) Generator(dirPath string, table *microlog.InfoTableObj)
 	column := table.Columns[rand.Intn(len(table.Columns))].Name
 
 	data.PackageName = filepath.Base(dirPath)
-	data.Global = microlog.FileGoFuncTest.NewTemplate()
-
-	data.GoName = fmt.Sprintf("%s%s", generator_go.ColumnNamePrefix, microlog.NameValGo(column))
+	data.GoName = fmt.Sprintf("Name%s", microlog.NameValGo(column))
 	data.TableName = table.Name
 	data.ColumnName = column
 	data.ColumnNameSQL = "`" + table.Name + "." + column + "`"

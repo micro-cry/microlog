@@ -14,14 +14,12 @@ import (
 type FuncObj struct {
 	Global *microlog.GlobalDocInfoObj
 
-	PackageName    string
-	TableConstName string
-	MapName        string
+	PackageName string
+	MapName     string
 
-	ColumnTypeName   string
-	DataObjName      string
-	DataTableObjName string
-	ParentComment    string
+	ColumnTypeName string
+	GoTableName    string
+	ParentComment  string
 
 	ChildrenArr []string
 	ParentArr   []string
@@ -34,23 +32,16 @@ type FuncObj struct {
 func NewFunc(rootDirName string) generator_go.GeneratorInterface {
 	obj := new(FuncObj)
 	obj.rootDirName = rootDirName
+	obj.Global = microlog.FileGoFunc.NewTemplate()
 	return obj
 }
 
 func (data *FuncObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
-	data.Global = microlog.FileGoFunc.NewTemplate()
-
-	data.TableConstName = generator_go.TableConstName
 	data.MapName = generator_go.TableMapName
 
 	data.ColumnTypeName = generator_go.TypeColumnName
-	data.DataObjName = microlog.NameValGo(table.Name) + "Obj"
-	data.DataTableObjName = microlog.NameValGo(table.Name) + "TableObj"
-	data.ParentComment = ""
-
-	data.ChildrenArr = make([]string, 0)
-	data.ParentArr = make([]string, 0)
+	data.GoTableName = microlog.NameValGo(table.Name)
 
 	// //
 

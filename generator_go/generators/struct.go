@@ -28,12 +28,12 @@ type StructObj struct {
 func NewStruct(rootDirName string) generator_go.GeneratorInterface {
 	obj := new(StructObj)
 	obj.rootDirName = rootDirName
+	obj.Global = microlog.FileGoStruct.NewTemplate()
 	return obj
 }
 
 func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
-	data.Global = microlog.FileGoStruct.NewTemplate()
 	data.TypeColumnName = generator_go.TypeColumnName
 
 	data.TableObj = new(microlog.TemplateStructObj)

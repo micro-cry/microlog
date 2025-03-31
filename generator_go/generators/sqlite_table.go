@@ -23,13 +23,12 @@ type SQLiteTableObj struct {
 func NewSQLiteTable(rootDirName string) generator_go.GeneratorInterface {
 	obj := new(SQLiteTableObj)
 	obj.rootDirName = rootDirName
+	obj.Global = microlog.FileGoSqliteTable.NewTemplate()
 	return obj
 }
 
 func (data *SQLiteTableObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
-	data.Global = microlog.FileGoSqliteTable.NewTemplate()
-
 	data.SQLiteObjName = generator_go.SQLitePrefix + "Obj"
 
 	return writeFileFromTemplate(filepath.Join(dirPath, data.Global.NameGoFile()), data.Global.TemplateText(), data)

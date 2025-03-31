@@ -27,13 +27,12 @@ type ValuesObj struct {
 func NewValues(rootDirName string) generator_go.GeneratorInterface {
 	obj := new(ValuesObj)
 	obj.rootDirName = rootDirName
+	obj.Global = microlog.FileGoValues.NewTemplate()
 	return obj
 }
 
 func (data *ValuesObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
-	data.Global = microlog.FileGoValues.NewTemplate()
-
 	data.TableName = table.Name
 
 	data.Map = new(microlog.TemplateMapObj)
