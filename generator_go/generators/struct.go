@@ -12,6 +12,8 @@ import (
 // // // // // // // // // //
 
 type StructObj struct {
+	Global *microlog.GlobalDocInfoObj
+
 	PackageName    string
 	GoTableName    string
 	ColumnNameType string
@@ -26,6 +28,8 @@ type StructObj struct {
 
 func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
+	data.Global = microlog.FileGoStruct.NewTemplate()
+
 	data.ColumnNameType = generator_go.TypeColumnName
 	data.GoTableName = microlog.NameValGo(table.Name)
 
@@ -103,5 +107,5 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 
 	// //
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "struct.go"), microlog.FileGoStruct.Data, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, data.Global.NameGoFile()), data.Global.TemplateText(), data)
 }

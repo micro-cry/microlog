@@ -10,6 +10,8 @@ import (
 // // // // // // // // // //
 
 type SQLiteTableObj struct {
+	Global *microlog.GlobalDocInfoObj
+
 	PackageName   string
 	SQLiteObjName string
 }
@@ -18,7 +20,9 @@ type SQLiteTableObj struct {
 
 func (data *SQLiteTableObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
+	data.Global = microlog.FileGoSqliteTable.NewTemplate()
+
 	data.SQLiteObjName = generator_go.SQLitePrefix + "Obj"
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_table.go"), microlog.FileGoSqliteTable.Data, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, data.Global.NameGoFile()), data.Global.TemplateText(), data)
 }

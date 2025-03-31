@@ -12,6 +12,8 @@ import (
 // // // // // // // // // //
 
 type FuncTestObj struct {
+	Global *microlog.GlobalDocInfoObj
+
 	PackageName   string
 	GoName        string
 	TableName     string
@@ -25,10 +27,12 @@ func (data *FuncTestObj) Generator(dirPath string, table *microlog.InfoTableObj)
 	column := table.Columns[rand.Intn(len(table.Columns))].Name
 
 	data.PackageName = filepath.Base(dirPath)
+	data.Global = microlog.FileGoFuncTest.NewTemplate()
+
 	data.GoName = fmt.Sprintf("%s%s", generator_go.ColumnNamePrefix, microlog.NameValGo(column))
 	data.TableName = table.Name
 	data.ColumnName = column
 	data.ColumnNameSQL = "`" + table.Name + "." + column + "`"
 
-	return writeFileFromTemplate(filepath.Join(dirPath, "func_test.go"), microlog.FileGoFunctest.Data, data)
+	return writeFileFromTemplate(filepath.Join(dirPath, data.Global.NameGoFile()), data.Global.TemplateText(), data)
 }
