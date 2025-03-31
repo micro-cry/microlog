@@ -2,66 +2,101 @@ package generator_md
 
 import (
 	"bytes"
+	_ "embed"
 	"fmt"
 	"microlog"
 	"os"
+	"path/filepath"
+	"strings"
+	"text/template"
 )
 
 // // // // // // // // // //
 
-func Generate(tablesArr []microlog.InfoTableObj, pathToFile string) error {
-	var buf bytes.Buffer
-	buf.WriteString("# The overall structure of the tables\n")
-	buf.WriteString("This file is generated automatically\n\n")
-	buf.WriteString("---\n\n")
+//go:embed md-tables-struct.tmpl
+var MdTablesFile string
 
-	// //
+type TableObj struct {
+	Title          string
+	ColumnsNameArr []string
+	RowsArr        [][]string
+}
+
+type MdTablesObj struct {
+	TablesArr []*TableObj
+}
+
+// //
+
+func Generate(tablesArr []microlog.InfoTableObj, pathToFile string) error {
+	data := new(MdTablesObj)
 
 	for _, table := range tablesArr {
-		buf.WriteString(fmt.Sprintf("## %s\n\n", table.Name))
-		lineBuf := []string{"|", "|", "|", "|"}
+		tableBuf := new(TableObj)
+
+		tableBuf.Title = table.Name
+		tableBuf.RowsArr = [][]string{[]string{}, []string{}}
 
 		for _, column := range table.Columns {
-			lineBuf[0] += fmt.Sprintf(" %s |", column.Name)
-			lineBuf[1] += "--|"
+			tableBuf.ColumnsNameArr = append(tableBuf.ColumnsNameArr, column.Name)
+			var row1Buf strings.Builder
+			var row2Buf strings.Builder
 
-			lineBuf[2] += " "
 			if column.Children == nil {
-
 				if column.Length > 0 {
-					lineBuf[2] += fmt.Sprintf("[%d]", column.Length)
+					row1Buf.WriteString(fmt.Sprintf("[%d]", column.Length))
 				}
-				lineBuf[2] += column.Type.String()
-
+				row1Buf.WriteString(column.Type.String())
 			} else {
-				lineBuf[2] += fmt.Sprintf("%s.%s", column.Children.Table.Name, column.Children.Column.Name)
+				row1Buf.WriteString(fmt.Sprintf("%s.%s", column.Children.Table.Name, column.Children.Column.Name))
 			}
-			lineBuf[2] += " |"
 
 			if column.Key != microlog.KeyNone {
-				lineBuf[3] += fmt.Sprintf(" _%s_ |", column.Key.String())
+				row2Buf.WriteString(fmt.Sprintf("_%s_", column.Key.String()))
 			} else if column.Children != nil {
-				lineBuf[3] += fmt.Sprintf(" _*%s_ |", microlog.KeyIndex.String())
+				row2Buf.WriteString(fmt.Sprintf("_*%s_", microlog.KeyIndex.String()))
 			} else {
-				lineBuf[3] += " - |"
+				row2Buf.WriteString("-")
 			}
 
+			tableBuf.RowsArr[0] = append(tableBuf.RowsArr[0], row1Buf.String())
+			tableBuf.RowsArr[1] = append(tableBuf.RowsArr[1], row2Buf.String())
 		}
 
-		for _, line := range lineBuf {
-			buf.WriteString(line + "\n")
-		}
-		buf.WriteString("\n\n")
+		data.TablesArr = append(data.TablesArr, tableBuf)
 	}
 
 	// //
 
+	return writeFileFromTemplate(pathToFile, MdTablesFile, data)
+}
+
+// //
+
+func writeFileFromTemplate(pathToFile string, textTemplate string, dataTemplate any) error {
+	fileName := filepath.Base(pathToFile)
+
+	t, err := template.New(fileName).Parse(textTemplate)
+	if err != nil {
+		return fmt.Errorf("init template [%s]: %s", fileName, err.Error())
+	}
+
+	var buf bytes.Buffer
+	err = t.Execute(&buf, dataTemplate)
+	if err != nil {
+		return fmt.Errorf("filling template [%s]: %s", fileName, err.Error())
+	}
+
 	file, err := os.OpenFile(pathToFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
-		return err
+		return fmt.Errorf("open file [%s]: %s", fileName, err.Error())
 	}
 	defer file.Close()
 
 	_, err = file.Write(buf.Bytes())
-	return err
+	if err != nil {
+		return fmt.Errorf("write file [%s]: %s", fileName, err.Error())
+	}
+
+	return nil
 }

@@ -1,0 +1,21 @@
+# The overall structure of the tables
+This file is generated automatically
+
+---
+{{ define "table" -}}
+
+    ## {{ .Title }}
+    {{- if .ColumnsNameArr }}
+        |{{- range .ColumnsNameArr }} {{ . }} |{{ end }}
+        |{{- range .ColumnsNameArr }} --- |{{ end }}
+    {{- end }}
+
+    {{- range .RowsArr }}
+        |{{- range . }} {{ . }} |{{ end }}
+    {{- end }}
+
+{{ end }}
+
+{{ range .TablesArr }}
+    {{ template "table" . }}
+{{ end }}
