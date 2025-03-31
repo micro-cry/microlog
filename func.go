@@ -3,6 +3,7 @@ package microlog
 import (
 	"fmt"
 	"strings"
+	"time"
 	"unicode"
 )
 
@@ -73,6 +74,32 @@ func (emtp *EmbedTemplateObj) FileName() string {
 
 func (emtp *EmbedTemplateObj) FullPath() string {
 	return emtp.Path + "/" + emtp.FileName()
+}
+
+func (emtp *EmbedTemplateObj) NewTemplate() *GlobalDocInfoObj {
+	obj := new(GlobalDocInfoObj)
+	obj.Params = make(map[string]string)
+
+	obj.embeddedTemplate = emtp
+	obj.TemplatePath = emtp.FullPath()
+	obj.GenerationTime = time.Now().Format(time.RFC3339)
+
+	obj.Params["ver"] = "'" + GlobalVersion + "'"
+	obj.Params["name"] = "'" + GlobalName + "'"
+	obj.Params["commit_hash"] = "'" + GlobalHash[32:] + "'"
+	obj.Params["commit_date"] = "'" + GlobalDateUpdate + "'"
+
+	return obj
+}
+
+//
+
+func (obj *GlobalDocInfoObj) TemplateText() string {
+	return obj.embeddedTemplate.Data
+}
+
+func (obj *GlobalDocInfoObj) NameGoFile() string {
+	return obj.embeddedTemplate.Name + ".go"
 }
 
 // //

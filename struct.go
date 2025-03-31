@@ -42,7 +42,7 @@ type GlobalDocInfoObj struct {
 	GenerationTime string
 	Params         map[string]string
 
-	PackageName string
+	embeddedTemplate *EmbedTemplateObj
 }
 
 //

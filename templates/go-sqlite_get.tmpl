@@ -5,7 +5,7 @@
     // Parameters: {{$first := true}}{{range $key, $value := .Global.Params}}{{if $first}}{{$first = false}}{{else}} {{end}}{{$key}}={{$value}}{{end}}
 {{- end}}
 
-package {{.Global.PackageName}}
+package {{.PackageName}}
 
 {{$PrefixMap := "Map"}}
 {{$PrefixStruct := "Obj"}}
