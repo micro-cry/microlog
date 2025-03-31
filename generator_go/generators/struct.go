@@ -27,7 +27,7 @@ type StructObj struct {
 func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
 	data.ColumnNameType = generator_go.TypeColumnName
-	data.GoTableName = generator_go.NameValGo(table.Name)
+	data.GoTableName = microlog.NameValGo(table.Name)
 
 	data.ImportArr = make([]string, 0)
 	data.ObjArr = make([]string, 0)
@@ -56,7 +56,7 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 	for _, column := range table.Columns {
 		var strBuf strings.Builder
 
-		strBuf.WriteString(generator_go.NameValGo(column.Name))
+		strBuf.WriteString(microlog.NameValGo(column.Name))
 		strBuf.WriteString("\t")
 
 		if column.Children == nil {
@@ -68,7 +68,7 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 				"*%s%s.%sObj\t",
 				generator_go.DirPrefix,
 				column.Children.Table.Name,
-				generator_go.NameValGo(column.Children.Table.Name),
+				microlog.NameValGo(column.Children.Table.Name),
 			))
 		}
 
@@ -80,7 +80,7 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 	for _, column := range table.Columns {
 		var strBuf strings.Builder
 
-		strBuf.WriteString(generator_go.NameValGo(column.Name))
+		strBuf.WriteString(microlog.NameValGo(column.Name))
 		strBuf.WriteString("\t")
 
 		if column.Children == nil {

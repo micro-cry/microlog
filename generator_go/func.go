@@ -3,8 +3,6 @@ package generator_go
 import (
 	"os"
 	"path/filepath"
-	"strings"
-	"unicode"
 )
 
 // // // // // // // // // //
@@ -38,17 +36,4 @@ func DirCreate(pathToDir, dirName string) (string, error) {
 	}
 
 	return newPath, nil
-}
-
-// // //
-
-func NameValGo(s string) string {
-	if len(s) == 0 {
-		return s
-	}
-
-	runes := []rune(s)
-	first := unicode.ToUpper(runes[0])
-	rest := strings.ToLower(string(runes[1:]))
-	return string(first) + rest
 }

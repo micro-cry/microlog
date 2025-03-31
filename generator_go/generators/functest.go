@@ -25,7 +25,7 @@ func (data *FuncTestObj) Generator(dirPath string, table *microlog.InfoTableObj)
 	column := table.Columns[rand.Intn(len(table.Columns))].Name
 
 	data.PackageName = filepath.Base(dirPath)
-	data.GoName = fmt.Sprintf("%s%s", generator_go.ColumnNamePrefix, generator_go.NameValGo(column))
+	data.GoName = fmt.Sprintf("%s%s", generator_go.ColumnNamePrefix, microlog.NameValGo(column))
 	data.TableName = table.Name
 	data.ColumnName = column
 	data.ColumnNameSQL = "`" + table.Name + "." + column + "`"

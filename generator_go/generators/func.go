@@ -33,8 +33,8 @@ func (data *FuncObj) Generator(dirPath string, table *microlog.InfoTableObj) err
 	data.MapName = generator_go.TableMapName
 
 	data.ColumnTypeName = generator_go.TypeColumnName
-	data.DataObjName = generator_go.NameValGo(table.Name) + "Obj"
-	data.DataTableObjName = generator_go.NameValGo(table.Name) + "TableObj"
+	data.DataObjName = microlog.NameValGo(table.Name) + "Obj"
+	data.DataTableObjName = microlog.NameValGo(table.Name) + "TableObj"
 	data.ParentComment = ""
 
 	data.ChildrenArr = make([]string, 0)
@@ -48,14 +48,14 @@ func (data *FuncObj) Generator(dirPath string, table *microlog.InfoTableObj) err
 		if column.Children == nil {
 			strBuf.WriteString(fmt.Sprintf(
 				"objTable.%s = obj.%s",
-				generator_go.NameValGo(column.Name), generator_go.NameValGo(column.Name),
+				microlog.NameValGo(column.Name), microlog.NameValGo(column.Name),
 			))
 		} else {
 			data.ParentComment = "// warning!!!\n// method does not create a complete structure, but only transfers those values that were in the original structure!"
 
 			strBuf.WriteString(fmt.Sprintf(
 				"objTable.%s = obj.%s.%s",
-				generator_go.NameValGo(column.Name), generator_go.NameValGo(column.Name), generator_go.NameValGo(column.Children.Column.Name),
+				microlog.NameValGo(column.Name), microlog.NameValGo(column.Name), microlog.NameValGo(column.Children.Column.Name),
 			))
 		}
 
@@ -66,7 +66,7 @@ func (data *FuncObj) Generator(dirPath string, table *microlog.InfoTableObj) err
 		if column.Children == nil {
 			data.ParentArr = append(data.ParentArr, fmt.Sprintf(
 				"objTable.%s = obj.%s",
-				generator_go.NameValGo(column.Name), generator_go.NameValGo(column.Name),
+				microlog.NameValGo(column.Name), microlog.NameValGo(column.Name),
 			))
 		}
 	}

@@ -37,14 +37,14 @@ func (data *ValuesObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 	for _, column := range table.Columns {
 		data.ConstArr = append(data.ConstArr, fmt.Sprintf(
 			"%s%s %s = \"%s\"",
-			generator_go.ColumnNamePrefix, generator_go.NameValGo(column.Name), generator_go.TypeColumnName, column.Name,
+			generator_go.ColumnNamePrefix, microlog.NameValGo(column.Name), generator_go.TypeColumnName, column.Name,
 		))
 	}
 
 	for _, column := range table.Columns {
 		var strBuf strings.Builder
 
-		strBuf.WriteString(fmt.Sprintf("%s%s: ", generator_go.ColumnNamePrefix, generator_go.NameValGo(column.Name)))
+		strBuf.WriteString(fmt.Sprintf("%s%s: ", generator_go.ColumnNamePrefix, microlog.NameValGo(column.Name)))
 		strBuf.WriteString("\"")
 
 		if column.Children == nil {

@@ -30,6 +30,8 @@ type InfoTableObj struct {
 
 type EmbedTemplateObj struct {
 	Path string
+	Type string
+	Name string
 	Data string
 }
 
