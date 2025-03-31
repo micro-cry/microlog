@@ -13,3 +13,18 @@ type TemplateStructObj struct {
 	CommentStruct string
 	LinesArr      []*StructLineObj
 }
+
+//
+
+type MapLineObj struct {
+	Key     string
+	Value   string
+	Comment string
+}
+type TemplateMapObj struct {
+	NameMap    string
+	CommentMap string
+	TypeKey    string
+	TypeValue  string
+	ValuesArr  []*MapLineObj
+}

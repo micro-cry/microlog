@@ -14,3 +14,14 @@ type {{ .Data.NameStruct }}Obj struct {
     {{ .Name }} {{ .Type }} {{- if .Reflect }}`{{ .Reflect }}`{{ end }}{{- if .Comment }} // {{ .Comment }}{{ end }}
 {{- end }}
 }
+
+
+{{- if .Map.CommentMap }}
+
+    // {{ .Map.CommentMap }}
+{{- end }}
+var {{ .Map.NameMap }}Map = map[{{ .Map.TypeKey }}]{{ .Map.TypeValue }}{
+{{- range .Map.ValuesArr }}
+    {{ .Key }}: {{ .Value }},{{- if .Comment }} // {{ .Comment }}{{ end }}
+{{- end }}
+}
