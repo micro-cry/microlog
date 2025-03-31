@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"fmt"
 	"math/rand"
-	"microlog/tables"
+	"microlog"
 	"path/filepath"
 )
 
@@ -23,7 +23,7 @@ type FuncTestObj struct {
 
 // //
 
-func (data *FuncTestObj) Generator(dirPath string, table *tables.InfoTableObj) error {
+func (data *FuncTestObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	column := table.Columns[rand.Intn(len(table.Columns))].Name
 
 	data.PackageName = filepath.Base(dirPath)

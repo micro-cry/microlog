@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"microlog/tables"
+	"microlog"
 	"testing"
 )
 
@@ -17,7 +17,7 @@ func TestFileName(t *testing.T) {
 }
 
 func TestParseColumType(t *testing.T) {
-	expected := tables.ColumByte
+	expected := microlog.ColumByte
 	result := parseColumType(expected.String())
 	if result != expected {
 		t.Errorf("Expected %d, got %d", expected, result)
@@ -25,7 +25,7 @@ func TestParseColumType(t *testing.T) {
 }
 
 func TestParseKeyType(t *testing.T) {
-	expected := tables.KeyPrimary
+	expected := microlog.KeyPrimary
 	result := parseKeyType(expected.String())
 	if result != expected {
 		t.Errorf("Expected %d, got %d", expected, result)

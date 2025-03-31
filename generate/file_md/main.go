@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"microlog/tables/file_md"
-	"microlog/tables/parser"
+	"microlog/file_md"
+	"microlog/parser"
 	"os"
 	"path/filepath"
 )

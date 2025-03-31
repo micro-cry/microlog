@@ -3,7 +3,7 @@ package parser
 import (
 	"errors"
 	"fmt"
-	"microlog/tables"
+	"microlog"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -11,15 +11,15 @@ import (
 
 // // // // // // // // // //
 
-func Dir(pathToDir string) ([]tables.InfoTableObj, error) {
+func Dir(pathToDir string) ([]microlog.InfoTableObj, error) {
 	filesArr := scanDir(pathToDir)
 	if len(filesArr) == 0 {
 		return nil, errors.New("no files found in dir " + pathToDir)
 	}
 
-	tablesMap := make(map[string][]tables.InfoColumObj)
+	tablesMap := make(map[string][]microlog.InfoColumObj)
 	childMap := make(map[string]string)
-	retTables := make([]tables.InfoTableObj, 0)
+	retTables := make([]microlog.InfoTableObj, 0)
 
 	//
 
@@ -37,17 +37,17 @@ func Dir(pathToDir string) ([]tables.InfoTableObj, error) {
 			return nil, errors.New("duplicate table " + tableName)
 		}
 
-		columArr := make([]tables.InfoColumObj, 0)
+		columArr := make([]microlog.InfoColumObj, 0)
 		for _, obj := range bufArr {
 
-			colum := tables.InfoColumObj{
+			colum := microlog.InfoColumObj{
 				Name:   obj.Name,
 				Length: obj.Len,
 				Type:   parseColumType(obj.Type),
 				Key:    parseKeyType(obj.Key),
 			}
 			if obj.Children != "" {
-				colum.Children = new(tables.InfoColumChildrenObj)
+				colum.Children = new(microlog.InfoColumChildrenObj)
 				childMap[tableName+"."+obj.Name] = obj.Children
 			}
 
@@ -55,7 +55,7 @@ func Dir(pathToDir string) ([]tables.InfoTableObj, error) {
 		}
 
 		tablesMap[tableName] = columArr
-		retTables = append(retTables, tables.InfoTableObj{Name: tableName, Columns: columArr})
+		retTables = append(retTables, microlog.InfoTableObj{Name: tableName, Columns: columArr})
 	}
 
 	//

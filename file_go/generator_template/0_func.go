@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
-	"microlog/tables"
+	"microlog"
 	"os"
 	"path/filepath"
 	"strings"
@@ -35,20 +35,20 @@ func nameTableObj(tableName string) string {
 	return tableName + "TableObj"
 }
 
-func nameColumType(l uint32, t tables.ColumType) string {
+func nameColumType(l uint32, t microlog.ColumType) string {
 	switch t {
 
-	case tables.ColumBool, tables.ColumByte, tables.ColumString:
+	case microlog.ColumBool, microlog.ColumByte, microlog.ColumString:
 		return t.String()
 
-	case tables.ColumBytes:
+	case microlog.ColumBytes:
 		if l == 0 {
 			return "[]byte"
 		} else {
 			return fmt.Sprintf("[%d]byte", l)
 		}
 
-	case tables.ColumDateTime:
+	case microlog.ColumDateTime:
 		return "time.Time"
 	}
 

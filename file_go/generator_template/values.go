@@ -3,7 +3,7 @@ package generator_template
 import (
 	_ "embed"
 	"fmt"
-	"microlog/tables"
+	"microlog"
 	"path/filepath"
 	"strings"
 )
@@ -25,7 +25,7 @@ type ValuesObj struct {
 
 // //
 
-func (data *ValuesObj) Generator(dirPath string, table *tables.InfoTableObj) error {
+func (data *ValuesObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
 	data.TableName = table.Name
 	data.TableConstName = TableConstName

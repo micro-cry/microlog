@@ -2,7 +2,7 @@ package generator_template
 
 import (
 	_ "embed"
-	"microlog/tables"
+	"microlog"
 	"path/filepath"
 )
 
@@ -18,7 +18,7 @@ type SQLiteOtherObj struct {
 
 // //
 
-func (data *SQLiteOtherObj) Generator(dirPath string, table *tables.InfoTableObj) error {
+func (data *SQLiteOtherObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
 	data.SQLiteObjName = SQLitePrefix + "Obj"
 

@@ -1,11 +1,11 @@
 package file_go
 
 import (
-	"microlog/tables"
+	"microlog"
 )
 
 // // // // // // // // // //
 
 type GeneratorInterface interface {
-	Generator(dirPath string, table *tables.InfoTableObj) error
+	Generator(dirPath string, table *microlog.InfoTableObj) error
 }
