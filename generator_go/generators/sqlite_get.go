@@ -11,11 +11,11 @@ import (
 // // // // // // // // // //
 
 type SQLiteGetObj struct {
-	Global        GlobalDocInfoObj
+	Global        generator_go.GlobalDocInfoObj
 	SQLiteObjName string
 
-	Data *TemplateStructObj
-	Map  *TemplateMapObj
+	Data *generator_go.TemplateStructObj
+	Map  *generator_go.TemplateMapObj
 }
 
 // //
@@ -31,17 +31,17 @@ func (data *SQLiteGetObj) Generator(dirPath string, table *microlog.InfoTableObj
 	data.Global.Params["commit_hash"] = "'" + microlog.GlobalHash[32:] + "'"
 	data.Global.Params["commit_date"] = "'" + microlog.GlobalDateUpdate + "'"
 
-	data.SQLiteObjName = SQLitePrefix + "Obj"
+	data.SQLiteObjName = generator_go.SQLitePrefix + "Obj"
 
 	//
 
-	data.Data = new(TemplateStructObj)
-	data.Data.LinesArr = make([]*StructLineObj, 0)
+	data.Data = new(generator_go.TemplateStructObj)
+	data.Data.LinesArr = make([]*generator_go.StructLineObj, 0)
 
 	data.Data.NameStruct = "TestName"
 	data.Data.CommentStruct = "test comment"
 
-	data.Data.LinesArr = append(data.Data.LinesArr, &StructLineObj{
+	data.Data.LinesArr = append(data.Data.LinesArr, &generator_go.StructLineObj{
 		Name:    "SomeName",
 		Type:    "string",
 		Reflect: "asasasa",
@@ -50,15 +50,15 @@ func (data *SQLiteGetObj) Generator(dirPath string, table *microlog.InfoTableObj
 
 	//
 
-	data.Map = new(TemplateMapObj)
-	data.Map.ValuesArr = make([]*MapLineObj, 0)
+	data.Map = new(generator_go.TemplateMapObj)
+	data.Map.ValuesArr = make([]*generator_go.MapLineObj, 0)
 
 	data.Map.NameMap = "TestName"
 	data.Map.CommentMap = "test comment"
 	data.Map.TypeKey = "int"
 	data.Map.TypeValue = "string"
 
-	data.Map.ValuesArr = append(data.Map.ValuesArr, &MapLineObj{
+	data.Map.ValuesArr = append(data.Map.ValuesArr, &generator_go.MapLineObj{
 		Key:   "1",
 		Value: "\"TestName\"",
 	})

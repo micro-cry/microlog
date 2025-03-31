@@ -18,7 +18,7 @@ type SQLiteTableObj struct {
 
 func (data *SQLiteTableObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
-	data.SQLiteObjName = SQLitePrefix + "Obj"
+	data.SQLiteObjName = generator_go.SQLitePrefix + "Obj"
 
 	return writeFileFromTemplate(filepath.Join(dirPath, "sqlite_table.go"), generator_go.SQLiteTableFile, data)
 }

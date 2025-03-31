@@ -26,8 +26,8 @@ type StructObj struct {
 
 func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) error {
 	data.PackageName = filepath.Base(dirPath)
-	data.ColumnNameType = TypeColumnName
-	data.GoTableName = goNamespace(table.Name)
+	data.ColumnNameType = generator_go.TypeColumnName
+	data.GoTableName = generator_go.NameValGo(table.Name)
 
 	data.ImportArr = make([]string, 0)
 	data.ObjArr = make([]string, 0)
@@ -47,7 +47,7 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 		}
 
 		if column.Children != nil {
-			data.ImportArr = append(data.ImportArr, fmt.Sprintf("microlog/tables/%s%s", DirPrefix, column.Children.Table.Name))
+			data.ImportArr = append(data.ImportArr, fmt.Sprintf("microlog/tables/%s%s", generator_go.DirPrefix, column.Children.Table.Name))
 		}
 	}
 
@@ -56,7 +56,7 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 	for _, column := range table.Columns {
 		var strBuf strings.Builder
 
-		strBuf.WriteString(goNamespace(column.Name))
+		strBuf.WriteString(generator_go.NameValGo(column.Name))
 		strBuf.WriteString("\t")
 
 		if column.Children == nil {
@@ -66,9 +66,9 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 		} else {
 			strBuf.WriteString(fmt.Sprintf(
 				"*%s%s.%sObj\t",
-				DirPrefix,
+				generator_go.DirPrefix,
 				column.Children.Table.Name,
-				goNamespace(column.Children.Table.Name),
+				generator_go.NameValGo(column.Children.Table.Name),
 			))
 		}
 
@@ -80,7 +80,7 @@ func (data *StructObj) Generator(dirPath string, table *microlog.InfoTableObj) e
 	for _, column := range table.Columns {
 		var strBuf strings.Builder
 
-		strBuf.WriteString(goNamespace(column.Name))
+		strBuf.WriteString(generator_go.NameValGo(column.Name))
 		strBuf.WriteString("\t")
 
 		if column.Children == nil {

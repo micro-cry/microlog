@@ -23,13 +23,13 @@ var generatorArr = []generator_go.GeneratorInterface{
 //
 
 func Generate(tables []microlog.InfoTableObj, rootDirName, pathToDir string) error {
-	err := clearOldDir(pathToDir)
+	err := generator_go.DirRemoveAll(pathToDir)
 	if err != nil {
 		return err
 	}
 
 	for _, item := range tables {
-		newPath, err := createDir(pathToDir, item.Name)
+		newPath, err := generator_go.DirCreate(pathToDir, item.Name)
 		if err != nil {
 			return err
 		}
