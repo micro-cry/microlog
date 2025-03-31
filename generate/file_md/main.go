@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"microlog/file_md"
+	"microlog/generator_md"
 	"microlog/parser"
 	"os"
 	"path/filepath"
@@ -35,7 +35,7 @@ func main() {
 		panic("no tables: " + filesPath)
 	}
 
-	err = file_md.Generate(tables, "./tables structure.md")
+	err = generator_md.Generate(tables, "TEMP/tables structure.md")
 	if err != nil {
 		panic(err)
 	}

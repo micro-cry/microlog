@@ -1,8 +1,8 @@
-package file_go
+package generator_go
 
 import (
 	"microlog"
-	"microlog/file_go/generator_template"
+	"microlog/generator_go/generator_template"
 )
 
 // // // // // // // // // //

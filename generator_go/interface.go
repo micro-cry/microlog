@@ -1,4 +1,4 @@
-package file_go
+package generator_go
 
 import (
 	"microlog"

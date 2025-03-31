@@ -1,4 +1,4 @@
-package file_md
+package generator_md
 
 import (
 	"bytes"
