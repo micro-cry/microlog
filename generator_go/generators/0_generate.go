@@ -1,4 +1,4 @@
-package generator_template
+package generators
 
 import (
 	"microlog"
