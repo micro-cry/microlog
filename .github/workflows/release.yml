@@ -95,7 +95,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: target
-          path: target/**
+          path: target
 
   # ---------------------------------------------------------------------------
   # 3. RELEASE ─ strip heavy assets, tag and publish GitHub Release
