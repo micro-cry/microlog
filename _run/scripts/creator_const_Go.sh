@@ -5,6 +5,8 @@ dir_path=""
 file_name="target/value_project.go"
 package_name="target"
 
+echo "Generate $file_name in $package_name"
+
 #############################################################################
 #############################################################################
 
