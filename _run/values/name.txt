@@ -1,1 +1,1 @@
-Go microLog
+MicroLog
