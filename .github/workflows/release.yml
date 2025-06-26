@@ -140,7 +140,7 @@ jobs:
 
           git add -f target
 
-          git rm -r --cached --ignore-unmatch .github _generate _run gen.go .gitignore
+          git rm -r --cached --ignore-unmatch .github _generate _run gen.go .gitignore .idea
           git rm --cached --ignore-unmatch $(git ls-files '*.bin' '*.md')
 
           git commit -m "release(${BUILD_VER}): strip heavy assets"
