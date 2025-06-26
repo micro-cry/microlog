@@ -13,8 +13,9 @@ NAME=$(bash "$script_dir/git.sh" -b)
 echo -e "$NAME [$VERSION] \n" $(cat "$1") > "$1"
 #############################################################################
 
-#go generate ./...
-#go test -v ./...
+go test -v ./...
+
+bash "$script_dir/creator_const_Go.sh"
 
 #############################################################################
 exit 0

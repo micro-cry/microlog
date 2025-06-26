@@ -1,3 +1,3 @@
-module microlog
+module github.com/micro-cry/microlog
 
-go 1.24
+go 1.24.2
