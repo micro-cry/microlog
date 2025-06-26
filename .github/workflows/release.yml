@@ -89,13 +89,14 @@ jobs:
         run: |
           set -Eeuo pipefail
           mkdir -p target tmp
-          go generate
+          go generate ./...
 
       - name: 📦 Upload generated artefacts
         uses: actions/upload-artifact@v4
         with:
           name: target
-          path: target
+          path: target/**
+          if-no-files-found: error
 
   # ---------------------------------------------------------------------------
   # 3. RELEASE ─ strip heavy assets, tag and publish GitHub Release
